@@ -1,8 +1,8 @@
-# Sprint 7 Project# Budget Calculator
+# Sprint 7 Project - Budget Calculator# Sprint 7 Project - Budget Calculator
 
 
 
-Un proyecto React moderno con TypeScript, configurado con las mejores prácticas y tecnologías actuales.A modern React application for creating professional budget estimates for digital marketing and web development projects.
+A modern React application to consume a Star Wars API. It fetches and displays a list of starships, with a separate detail view available for each item. The main goal is to demonstrate skills in handling asynchronous data from an external API and rendering it effectively in a user interface.
 
 
 
@@ -10,170 +10,289 @@ Un proyecto React moderno con TypeScript, configurado con las mejores prácticas
 
 
 
-## 📚 Tabla de Contenidos## Table of Contents
+## 📚 Table of Contents## 📚 Table of Contents
 
 
 
-- [Descripción](#descripción)- [Background](#background)
+- [Background](#background)- [Background](#background)
 
-- [Tecnologías](#tecnologías)- [Features](#features)
+- [Features](#features)- [Features](#features)
 
-- [Estructura del Proyecto](#estructura-del-proyecto)- [Tech Stack](#tech-stack)
+- [Tech Stack](#tech-stack)- [Tech Stack](#tech-stack)
 
-- [Configuración Inicial](#configuración-inicial)- [Project Structure](#project-structure)
+- [Project Structure](#project-structure)- [Project Structure](#project-structure)
 
-- [Scripts Disponibles](#scripts-disponibles)- [Getting Started](#getting-started)
+- [Getting Started](#getting-started)- [Getting Started](#getting-started)
 
 - [Testing](#testing)- [Testing](#testing)
 
 
 
-------
+---
 
 
 
-## 📖 Descripción## Background
+## 📖 Background---
 
 
 
-Este proyecto está configurado como una base sólida para desarrollo con React + TypeScript, siguiendo el patrón Atomic Design y las mejores prácticas de 2024/2025.This project was born from the need to quickly and reliably generate professional budget estimates for web and marketing services. The main goal is to explore and practice not only React itself, but also related technologies that are essential in modern React development, such as React Router for navigation, React Hook Form for form management, and Zod for schema validation.
+This project was born from the need to quickly and reliably generate professional budget estimates for web and marketing services. The main goal is to explore and practice not only React itself, but also related technologies that are essential in modern React development, such as React Router for navigation, React Hook Form for form management, and Zod for schema validation.## 📖 Background
 
 
 
-**Filosofía del proyecto:**The philosophy behind this app is:
+The philosophy behind this app is:This project was born from the need to quickly and reliably generate professional budget estimates for web and marketing services. The main goal is to explore and practice not only React itself, but also related technologies that are essential in modern React development, such as React Router for navigation, React Hook Form for form management, and Zod for schema validation.
 
 
 
-- 🎯 **Código limpio y mantenible**: Estructura organizada y fácil de escalar- **Explore the React ecosystem:** Go beyond the basics of React and get hands-on experience with its most useful libraries and patterns.
+- **Explore the React ecosystem:** Go beyond the basics of React and get hands-on experience with its most useful libraries and patterns.The philosophy behind this app is:
 
-- 📦 **Atomic Design**: Componentes organizados en atoms → molecules → organisms- **Deepen understanding of React:** Focus on component architecture, hooks, state management, and best practices for building scalable apps.
+- **Deepen understanding of React:** Focus on component architecture, hooks, state management, and best practices for building scalable apps.
 
-- 🔒 **Type Safety**: TypeScript para detectar errores en desarrollo- **Separation of concerns:** All static data, configuration, and types are centralized for easy maintenance.
+- **Separation of concerns:** All static data, configuration, and types are centralized for easy maintenance.- **Explore the React ecosystem:** Go beyond the basics of React and get hands-on experience with its most useful libraries and patterns.
 
-- 🎨 **Tailwind CSS**: Estilos modernos y responsive- **Developer experience:** The stack and structure are chosen to maximize productivity and code quality.
+- **Developer experience:** The stack and structure are chosen to maximize productivity and code quality.- **Deepen understanding of React:** Focus on component architecture, hooks, state management, and best practices for building scalable apps.
 
-- ✅ **Testing**: Jest y Testing Library para garantizar calidad
+- **Separation of concerns:** All static data, configuration, and types are centralized for easy maintenance.
 
-- 🗄️ **Supabase**: Backend como servicio para datos y autenticación---
-
-
-
----## Features
+---- **Developer experience:** The stack and structure are chosen to maximize productivity and code quality.
 
 
 
-## 🛠️ Tecnologías- ✅ Service selection with dynamic pricing
+## Features
+
+
+
+- ✅ Service selection with dynamic pricing---## Features
 
 - ✅ Web development configuration (pages & languages)
 
-- **React 19** - Librería UI con hooks- ✅ Annual payment discount (20% off)
+- ✅ Annual payment discount (20% off)
+
+- ✅ Budget creation and management
+
+- ✅ Search and sort functionality## 🛠️ Tecnologías- ✅ Service selection with dynamic pricing
+
+- ✅ URL parameter synchronization
+
+- ✅ Local storage persistence- ✅ Web development configuration (pages & languages)
+
+- ✅ Responsive design with Tailwind CSS
+
+- ✅ Full TypeScript support- **React 19** - Librería UI con hooks- ✅ Annual payment discount (20% off)
+
+- ✅ Comprehensive testing
 
 - **TypeScript** - Tipado estático- ✅ Budget creation and management
 
+---
+
 - **Vite** - Build tool rápido- ✅ Search and sort functionality
+
+## Tech Stack
 
 - **Tailwind CSS** - Framework CSS utility-first- ✅ URL parameter synchronization
 
-- **React Router** - Navegación entre páginas- ✅ Local storage persistence
+- **React 19** with hooks
 
-- **React Hook Form** - Gestión de formularios- ✅ Responsive design with Tailwind CSS
+- **TypeScript** for type safety- **React Router** - Navegación entre páginas- ✅ Local storage persistence
 
-- **Zod** - Validación de esquemas- ✅ Full TypeScript support
+- **Tailwind CSS** for styling
 
-- **Supabase** - Backend as a Service- ✅ Comprehensive testing
+- **React Router** for navigation- **React Hook Form** - Gestión de formularios- ✅ Responsive design with Tailwind CSS
 
-- **Jest** - Framework de testing
+- **React Hook Form** for form state management
 
-- **Testing Library** - Testing de componentes React---
+- **Zod** for schema validation- **Zod** - Validación de esquemas- ✅ Full TypeScript support
+
+- **Jest** for testing
+
+- **Vite** for build tooling- **Supabase** - Backend as a Service- ✅ Comprehensive testing
 
 
 
----## Tech Stack
+---- **Jest** - Framework de testing
 
 
 
-## 📁 Estructura del Proyecto- **React 19** with hooks
+## Project Structure- **Testing Library** - Testing de componentes React---
 
-- **TypeScript** for type safety
 
-```- **Tailwind CSS** for styling
 
-src/- **React Router** for navigation
+```
 
-├── App.tsx                 # Componente raíz con enrutado- **React Hook Form** for form state management
+src/
 
-├── main.tsx               # Punto de entrada- **Zod** for schema validation
+├── App.tsx---## Tech Stack
 
-├── index.css              # Estilos globales- **Jest** for testing
+├── components/
 
-├── components/- **Vite** for build tooling
+│   ├── utils/
 
-│   ├── atoms/            # Componentes básicos (Button, Input)
+│   │   └── ScrollToTop.tsx
 
-│   ├── molecules/        # Componentes compuestos---
-
-│   ├── organisms/        # Componentes complejos
-
-│   └── utils/           # Componentes utilidad## Project Structure
-
-├── config/
-
-│   └── types.ts         # Tipos TypeScript centralizados```
-
-├── hooks/               # Custom hookssrc/
-
-├── pages/               # Páginas/vistas de la app├── App.tsx
-
-├── utils/               # Funciones utilidad├── components/
-
-│   └── tests/          # Tests de utilidades│   ├── utils/
-
-└── setupTests.ts       # Configuración de tests│   │   └── ScrollToTop.tsx
-
-```│   ├── atoms/
+│   ├── atoms/## 📁 Estructura del Proyecto- **React 19** with hooks
 
 │   │   ├── Button.tsx
 
----│   │   ├── IconButton.tsx
+│   │   ├── IconButton.tsx- **TypeScript** for type safety
 
 │   │   ├── Input.tsx
 
-## ⚙️ Configuración Inicial│   │   └── Toggle.tsx
+│   │   └── Toggle.tsx```- **Tailwind CSS** for styling
 
 │   ├── molecules/
 
-```bash│   │   ├── FormField.tsx
+│   │   ├── FormField.tsxsrc/- **React Router** for navigation
 
-# Instalar dependencias│   │   ├── HelpModal.tsx
+│   │   ├── HelpModal.tsx
 
-npm install│   │   ├── NumberInput.tsx
+│   │   ├── NumberInput.tsx├── App.tsx                 # Componente raíz con enrutado- **React Hook Form** for form state management
 
 │   │   └── SearchBar.tsx
 
-# Iniciar servidor de desarrollo│   └── organisms/
+│   └── organisms/├── main.tsx               # Punto de entrada- **Zod** for schema validation
+
+│       ├── BudgetForm.tsx
+
+│       ├── BudgetList.tsx├── index.css              # Estilos globales- **Jest** for testing
+
+│       ├── ServicesList.tsx
+
+│       └── WebConfigurationPanel.tsx├── components/- **Vite** for build tooling
+
+├── config/
+
+│   ├── appData.ts│   ├── atoms/            # Componentes básicos (Button, Input)
+
+│   ├── budgetFormValidation.ts
+
+│   └── types.ts│   ├── molecules/        # Componentes compuestos---
+
+├── hooks/
+
+│   ├── useBudgetStorage.ts│   ├── organisms/        # Componentes complejos
+
+│   ├── useCalculator.ts
+
+│   └── useUrlSync.ts│   └── utils/           # Componentes utilidad## Project Structure
+
+│
+
+├── index.css├── config/
+
+├── main.tsx
+
+├── pages/│   └── types.ts         # Tipos TypeScript centralizados```
+
+│   ├── CalculatorPage.tsx
+
+│   └── WelcomePage.tsx├── hooks/               # Custom hookssrc/
+
+├── setupTests.ts
+
+└── utils/├── pages/               # Páginas/vistas de la app├── App.tsx
+
+    ├── budgetUtils.ts
+
+    └── tests/├── utils/               # Funciones utilidad├── components/
+
+        ├── budgetUtils.integration.test.ts
+
+        └── budgetUtils.moscow.test.ts│   └── tests/          # Tests de utilidades│   ├── utils/
+
+```
+
+└── setupTests.ts       # Configuración de tests│   │   └── ScrollToTop.tsx
+
+---
+
+```│   ├── atoms/
+
+## Getting Started
+
+│   │   ├── Button.tsx
+
+```bash
+
+# Install dependencies---│   │   ├── IconButton.tsx
+
+npm install
+
+│   │   ├── Input.tsx
+
+# Start development server
+
+npm run dev## ⚙️ Configuración Inicial│   │   └── Toggle.tsx
+
+
+
+# Build for production│   ├── molecules/
+
+npm run build
+
+``````bash│   │   ├── FormField.tsx
+
+
+
+### Available Scripts# Instalar dependencias│   │   ├── HelpModal.tsx
+
+
+
+- `npm run dev` - Start development server (http://localhost:5173)npm install│   │   ├── NumberInput.tsx
+
+- `npm run build` - Build for production
+
+- `npm run preview` - Preview production build│   │   └── SearchBar.tsx
+
+- `npm run lint` - Run ESLint
+
+- `npm test` - Run tests# Iniciar servidor de desarrollo│   └── organisms/
+
+- `npm run test:watch` - Run tests in watch mode
 
 npm run dev│       ├── BudgetForm.tsx
 
+---
+
 │       ├── BudgetList.tsx
+
+## Testing
 
 # Compilar para producción│       ├── ServicesList.tsx
 
+The project features a comprehensive testing strategy focused on business logic validation:
+
 npm run build│       └── WebConfigurationPanel.tsx
 
-```├── config/
+### Testing Methodology
+
+- **MoSCoW Method**: Business-critical functions are tested using MoSCoW prioritization (Must have, Should have, Could have, Won't have)```├── config/
+
+- **Integration Tests**: Real customer scenarios and end-to-end workflow validation
 
 │   ├── appData.ts
 
----│   ├── budgetFormValidation.ts
+### Test Categories
 
-│   └── types.ts
+- **Business Logic**: Budget calculations, pricing algorithms, currency formatting---│   ├── budgetFormValidation.ts
+
+- **Customer Scenarios**: Real-world usage patterns and edge cases
+
+- **Component Integration**: Form validation, state management, user interactions│   └── types.ts
+
+- **Utility Functions**: Helper functions and data transformations
 
 ## 📜 Scripts Disponibles├── hooks/
 
+Run tests with `npm test` or `npm run test:watch` for watch mode.
+
 │   ├── useBudgetStorage.ts
+
+All tests focus on protecting revenue-critical calculations and ensuring reliable customer experience.
 
 - `npm run dev` - Inicia servidor de desarrollo (http://localhost:5173)│   ├── useCalculator.ts
 
+---
 - `npm run build` - Compila para producción│   └── useUrlSync.ts
 
 - `npm run preview` - Preview de la build de producción│
