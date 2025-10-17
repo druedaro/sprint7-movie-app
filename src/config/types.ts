@@ -70,3 +70,9 @@ export type AuthMode = 'login' | 'register';
 export interface ProtectedRouteProps {
   children: ReactNode;
 }
+
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
+  children: ReactNode;
+}
