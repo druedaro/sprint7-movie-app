@@ -1,60 +1,68 @@
-/**
- * 📘 ARCHIVO DE TIPOS TYPESCRIPT - CONFIGURACIÓN CENTRAL
- * ======================================================
- * 
- * PROPÓSITO:
- * Define TODAS las interfaces y tipos TypeScript del proyecto.
- * Es el "diccionario" que describe la estructura de datos y props.
- * 
- * VENTAJAS DE CENTRALIZAR TIPOS:
- * ✅ Evita duplicación de código
- * ✅ Facilita mantenimiento (un solo lugar para actualizar)
- * ✅ Proporciona autocompletado en el IDE
- * ✅ Detecta errores en tiempo de desarrollo
- * ✅ Documenta la estructura de la aplicación
- * 
- * ORGANIZACIÓN:
- * 1. Importaciones de React
- * 2. Interfaces de datos
- * 3. Tipos auxiliares
- * 4. Interfaces de componentes (Props)
- */
 
-// 📦 IMPORTACIONES DE TIPOS DE REACT
 import type { ReactNode, ButtonHTMLAttributes, InputHTMLAttributes } from 'react';
 
-// ═══════════════════════════════════════════════════════════════════════════
-// 🗂️ INTERFACES DE DATOS (MODELOS DE LA APLICACIÓN)
-// ═══════════════════════════════════════════════════════════════════════════
-
-// Las interfaces de datos se definirán aquí según las necesidades del proyecto
-
-// ═══════════════════════════════════════════════════════════════════════════
-// 🎯 TIPOS AUXILIARES (ENUMS Y UNIONS)
-// ═══════════════════════════════════════════════════════════════════════════
-
-// Los tipos auxiliares se definirán aquí según las necesidades del proyecto
-
-// ═══════════════════════════════════════════════════════════════════════════
-// 🧩 INTERFACES DE PROPS (COMPONENTES REUTILIZABLES)
-// ═══════════════════════════════════════════════════════════════════════════
-
-/**
- * 🔘 BUTTONPROPS - Props del componente Button reutilizable
- * Extiende ButtonHTMLAttributes: hereda TODOS los atributos nativos de <button>
- */
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
-  children: ReactNode;
+export interface Movie {
+  id: number;
+  title: string;
+  overview: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
+  release_date: string;
+  vote_average: number;
+  vote_count: number;
+  popularity: number;
+  genre_ids: number[];
+  adult: boolean;
+  original_language: string;
+  original_title: string;
+  video: boolean;
 }
 
-/**
- * ✏️ INPUTPROPS - Props del componente Input personalizado
- * Extiende InputHTMLAttributes: hereda todos los atributos nativos de <input>
- */
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  error?: string;
-  helperText?: string;
+export interface Series {
+  id: number;
+  name: string;
+  overview: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
+  first_air_date: string;
+  vote_average: number;
+  vote_count: number;
+  popularity: number;
+  genre_ids: number[];
+  origin_country: string[];
+  original_language: string;
+  original_name: string;
 }
+
+export interface Genre {
+  id: number;
+  name: string;
+}
+
+export interface User {
+  id: string;
+  email: string;
+}
+
+export interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  register: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+}
+
+export interface TMDBResponse<T> {
+  page: number;
+  results: T[];
+  total_pages: number;
+  total_results: number;
+}
+
+export type MediaType = 'movie' | 'tv';
+
+export type MovieCategory = 'popular' | 'top_rated' | 'upcoming';
+
+export type SeriesCategory = 'popular' | 'top_rated';
+
+export type AuthMode = 'login' | 'register';
