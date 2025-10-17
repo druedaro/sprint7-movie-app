@@ -34,5 +34,22 @@ export default {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    function({ addComponents }) {
+      addComponents({
+        '.nav-glass': {
+          backgroundColor: 'rgb(0 0 0 / 0.2)',
+          backdropFilter: 'blur(16px)',
+          borderBottomWidth: '1px',
+          borderBottomColor: 'rgb(255 255 255 / 0.1)',
+        },
+        '.footer-glass': {
+          backgroundColor: 'rgb(0 0 0 / 0.3)',
+          backdropFilter: 'blur(12px)',
+          borderTopWidth: '1px',
+          borderTopColor: 'rgb(255 255 255 / 0.1)',
+        },
+      })
+    }
+  ],
 }
