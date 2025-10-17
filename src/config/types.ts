@@ -66,3 +66,19 @@ export type MovieCategory = 'popular' | 'top_rated' | 'upcoming';
 export type SeriesCategory = 'popular' | 'top_rated';
 
 export type AuthMode = 'login' | 'register';
+
+export interface ProtectedRouteProps {
+  children: ReactNode;
+}
+
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
+  children: ReactNode;
+}
+
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  error?: string;
+  helperText?: string;
+}
