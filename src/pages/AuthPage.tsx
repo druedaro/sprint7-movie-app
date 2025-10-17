@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import Button from '../components/atoms/Button';
+import Input from '../components/atoms/Input';
 import type { AuthMode } from '../config/types';
 
 export default function AuthPage() {
@@ -45,8 +47,14 @@ export default function AuthPage() {
     }
   };
 
+  const switchMode = (newMode: AuthMode) => {
+    setMode(newMode);
+    setError('');
+    setConfirmPassword('');
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-secondary-900 to-secondary-800 px-4">
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-secondary-900 to-secondary-800 px-4">
       <div className="max-w-md w-full bg-secondary-800/50 backdrop-blur-sm border border-white/10 rounded-lg p-8">
         <h1 className="text-3xl font-bold text-white mb-6 text-center">
           🎬 {mode === 'login' ? 'Welcome Back' : 'Create Account'}
@@ -54,20 +62,20 @@ export default function AuthPage() {
 
         <div className="flex gap-2 mb-6">
           <button
-            onClick={() => setMode('login')}
+            onClick={() => switchMode('login')}
             className={`flex-1 py-2 rounded-lg font-medium transition-colors ${
               mode === 'login'
-                ? 'bg-primary-400 text-black'
+                ? 'bg-primary-400 text-black font-bold'
                 : 'bg-secondary-700 text-gray-400'
             }`}
           >
             Sign In
           </button>
           <button
-            onClick={() => setMode('register')}
+            onClick={() => switchMode('register')}
             className={`flex-1 py-2 rounded-lg font-medium transition-colors ${
               mode === 'register'
-                ? 'bg-primary-400 text-black'
+                ? 'bg-primary-400 text-black font-bold'
                 : 'bg-secondary-700 text-gray-400'
             }`}
           >
@@ -75,62 +83,59 @@ export default function AuthPage() {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
             <div className="bg-red-500/10 border border-red-500/30 text-red-300 px-4 py-3 rounded-lg">
               {error}
             </div>
           )}
 
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 bg-secondary-700 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400"
-              required
-            />
-          </div>
+          <Input
+            type="email"
+            label="Email"
+            placeholder="you@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 bg-secondary-700 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400"
-              required
-            />
-          </div>
+          <Input
+            type="password"
+            label="Password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            helperText={mode === 'register' ? 'Minimum 6 characters' : undefined}
+            required
+          />
 
           {mode === 'register' && (
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-2 bg-secondary-700 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400"
-                required
-              />
-            </div>
+            <Input
+              type="password"
+              label="Confirm Password"
+              placeholder="••••••••"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
           )}
 
-          <button
+          <Button
             type="submit"
-            className="w-full bg-primary-400 text-black font-bold py-3 rounded-lg hover:bg-primary-300 transition-colors"
+            variant="primary"
+            size="lg"
+            className="w-full"
           >
             {mode === 'login' ? 'Sign In' : 'Create Account'}
-          </button>
+          </Button>
+
+          <p className="text-center text-sm">
+            <Link to="/" className="text-gray-400 hover:text-gray-300">
+              ← Back to home
+            </Link>
+          </p>
         </form>
       </div>
-    </div>
+    </main>
   );
 }
