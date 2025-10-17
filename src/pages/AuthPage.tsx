@@ -27,6 +27,7 @@ export default function AuthPage() {
         setError('Passwords do not match');
         return;
       }
+
       if (password.length < 6) {
         setError('Password must be at least 6 characters');
         return;
@@ -43,7 +44,11 @@ export default function AuthPage() {
       }
     } catch (err) {
       const error = err as Error;
-      setError(error.message || `Error ${mode === 'login' ? 'signing in' : 'creating account'}`);
+      if (mode === 'register' && error.message.includes('already registered')) {
+        setError('This email is already registered. Try signing in.');
+      } else {
+        setError(error.message || `Error ${mode === 'login' ? 'signing in' : 'creating account'}. Please try again.`);
+      }
     }
   };
 
@@ -54,29 +59,38 @@ export default function AuthPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-secondary-900 to-secondary-800 px-4">
-      <div className="max-w-md w-full bg-secondary-800/50 backdrop-blur-sm border border-white/10 rounded-lg p-8">
-        <h1 className="text-3xl font-bold text-white mb-6 text-center">
-          🎬 {mode === 'login' ? 'Welcome Back' : 'Create Account'}
-        </h1>
+    <main className="min-h-screen flex items-center justify-center bg-gradient-app px-4">
+      <div className="max-w-md w-full card-glass p-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-white mb-2">
+            🎬 {mode === 'login' ? 'Welcome Back' : 'Create Account'}
+          </h1>
+          <p className="text-gray-300">
+            {mode === 'login' 
+              ? 'Sign in to explore movies and series' 
+              : 'Sign up to start exploring content'
+            }
+          </p>
+        </div>
 
         <div className="flex gap-2 mb-6">
           <button
             onClick={() => switchMode('login')}
-            className={`flex-1 py-2 rounded-lg font-medium transition-colors ${
+            className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all ${
               mode === 'login'
                 ? 'bg-primary-400 text-black font-bold'
-                : 'bg-secondary-700 text-gray-400'
+                : 'bg-slate-800/50 text-gray-400 hover:text-white'
             }`}
           >
             Sign In
           </button>
           <button
             onClick={() => switchMode('register')}
-            className={`flex-1 py-2 rounded-lg font-medium transition-colors ${
+            className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all ${
               mode === 'register'
                 ? 'bg-primary-400 text-black font-bold'
-                : 'bg-secondary-700 text-gray-400'
+                : 'bg-slate-800/50 text-gray-400 hover:text-white'
             }`}
           >
             Sign Up
@@ -85,7 +99,7 @@ export default function AuthPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
-            <div className="bg-red-500/10 border border-red-500/30 text-red-300 px-4 py-3 rounded-lg">
+            <div className="bg-red-500/10 border border-red-500/30 text-red-300 px-4 py-3 rounded-lg backdrop-blur-sm">
               {error}
             </div>
           )}
