@@ -1,19 +1,18 @@
-// App.tsx
-// Componente raíz de la aplicación - Configura el enrutado principal
-// Define las rutas disponibles y componentes que renderizan cada página
-// Nivel de explicación: beginner (comentarios en español)
-
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './auth/AuthContext';
+import { PATHS } from './routes/paths';
 
 function App() {
   return (
-    <Router>
-      <div className="App">
+    <AuthProvider>
+      <BrowserRouter>
         <Routes>
-          <Route path="/" element={<div>Home Page</div>} />
+          <Route path={PATHS.HOME} element={<div>Welcome Page (Coming soon)</div>} />
+          <Route path={PATHS.AUTH} element={<div>Auth Page (Coming soon)</div>} />
+          <Route path={PATHS.MOVIES} element={<div>Movies Page (Coming soon)</div>} />
         </Routes>
-      </div>
-    </Router>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
