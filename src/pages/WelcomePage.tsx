@@ -2,102 +2,131 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import Button from '../components/atoms/Button';
 import Footer from '../components/organisms/Footer';
-import { paths } from '../routes/paths';
 
 export default function WelcomePage() {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gradient-app flex flex-col">
-      <header className="container mx-auto px-4 py-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-3xl">🎬</span>
-            <span className="font-bold text-white text-xl">
-              MovieApp
-            </span>
-          </div>
-          
-          {!user && (
-            <Link to={paths.auth}>
-              <Button variant="primary" size="sm">
-                Sign In
-              </Button>
+    <div className="min-h-screen bg-gradient-app">
+      <nav className="nav-glass sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <Link to="/" className="flex items-center gap-2 flex-shrink-0">
+              <img 
+                src="/logo-header-light.svg" 
+                alt="The Corner Database" 
+                className="h-5 sm:h-6 md:h-8 w-auto"
+              />
             </Link>
-          )}
-        </div>
-      </header>
-
-      <main className="flex-1 flex items-center justify-center px-4">
-        <div className="text-center max-w-4xl mx-auto">
-          <div className="mb-12">
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
-              Discover Amazing
-              <span className="text-gradient-lime-white block">
-                Movies & Series
-              </span>
-            </h1>
-            
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-              Explore thousands of movies and TV series. Get detailed information, 
-              watch trailers, and discover your next favorite content.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            <div className="card-glass p-6">
-              <div className="text-4xl mb-4">🎬</div>
-              <h3 className="text-xl font-semibold text-white mb-2">Movies</h3>
-              <p className="text-gray-300">
-                Browse popular movies, search by title, and filter by genre
-              </p>
-            </div>
-            
-            <div className="card-glass p-6">
-              <div className="text-4xl mb-4">📺</div>
-              <h3 className="text-xl font-semibold text-white mb-2">TV Series</h3>
-              <p className="text-gray-300">
-                Discover trending series, seasons, and episode information
-              </p>
-            </div>
-            
-            <div className="card-glass p-6">
-              <div className="text-4xl mb-4">👤</div>
-              <h3 className="text-xl font-semibold text-white mb-2">Actors</h3>
-              <p className="text-gray-300">
-                Learn about your favorite actors and their filmography
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            {user ? (
-              <>
-                <Link to={paths.movies}>
-                  <Button variant="primary" size="lg" className="w-full sm:w-auto">
-                    🎬 Explore Movies
+            <div className="flex gap-2 sm:gap-3">
+              {user ? (
+                <Link to="/movies">
+                  <Button variant="primary" className="btn-primary" size="sm">
+                    Go to App
                   </Button>
                 </Link>
-                <Link to={paths.series}>
-                  <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-                    📺 Browse Series
-                  </Button>
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link to={paths.auth}>
-                  <Button variant="primary" size="lg" className="w-full sm:w-auto">
+              ) : (
+                <Link to="/auth">
+                  <Button variant="primary" className="btn-primary" size="sm">
                     Get Started
                   </Button>
                 </Link>
-                <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-                  Learn More
-                </Button>
-              </>
-            )}
+              )}
+            </div>
           </div>
         </div>
+      </nav>
+
+      <main>
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+          <div className="text-center">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 mb-8">
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+              <span className="text-sm text-white font-medium">Powered by TMDB API</span>
+            </div>
+
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+              Your Ultimate
+              <br />
+              <span className="text-gradient-lime-white">
+                Movie & Series
+              </span>
+              <br />
+              Discovery Platform
+            </h1>
+
+            <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+              Explore thousands of movies and TV shows, get detailed information about actors, 
+              watch trailers, and curate your personal watchlist.
+            </p>
+
+            <Link to={user ? "/movies" : "/register"}>
+              <Button 
+                size="lg"
+                className="btn-primary px-12 py-4 text-lg font-semibold shadow-2xl shadow-primary-400/50 transform hover:scale-105 transition-all duration-200"
+              >
+                {user ? "🚀 Launch App" : "🎬 Start Exploring"}
+              </Button>
+            </Link>
+
+            {!user && (
+              <p className="mt-4 text-gray-400 text-sm">
+                Free forever. No credit card required.
+              </p>
+            )}
+          </div>
+        </section>
+
+        <section className="mt-13 md:mt-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="group relative bg-gradient-to-br from-primary-400/10 to-secondary-800/10 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-primary-400/50 transition-all duration-300 hover:transform hover:scale-105">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary-400/0 to-secondary-900/0 group-hover:from-primary-400/10 group-hover:to-secondary-900/10 rounded-2xl transition-all duration-300"></div>
+              <div className="relative">
+                <div className="text-5xl mb-4">🎬</div>
+                <h3 className="text-2xl font-bold text-white mb-3">
+                  Vast Library
+                </h3>
+                <p className="text-gray-300 leading-relaxed">
+                  Access an extensive collection of movies from classics to the latest blockbusters.
+                </p>
+              </div>
+            </div>
+
+            <div className="group relative bg-gradient-to-br from-primary-400/10 to-secondary-800/10 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-primary-400/50 transition-all duration-300 hover:transform hover:scale-105">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary-400/0 to-secondary-900/0 group-hover:from-primary-400/10 group-hover:to-secondary-900/10 rounded-2xl transition-all duration-300"></div>
+              <div className="relative">
+                <div className="text-5xl mb-4">📺</div>
+                <h3 className="text-2xl font-bold text-white mb-3">
+                  TV Series
+                </h3>
+                <p className="text-gray-300 leading-relaxed">
+                  Binge-watch your favorite series with complete season and episode details.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-16 md:mt-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2">10K+</div>
+              <div className="text-gray-400">Movies</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2">5K+</div>
+              <div className="text-gray-400">TV Shows</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2">50K+</div>
+              <div className="text-gray-400">Actors</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2">∞</div>
+              <div className="text-gray-400">Entertainment</div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />
