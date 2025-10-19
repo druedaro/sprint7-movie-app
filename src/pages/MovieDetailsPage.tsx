@@ -4,6 +4,7 @@ import Footer from '../components/organisms/Footer';
 import CastCard from '../components/atoms/CastCard';
 import { useMovieDetails } from '../hooks/useMovieDetails';
 import { formatYear, formatRating, formatRuntime } from '../utils/format';
+import SkeletonGrid from '../components/molecules/SkeletonGrid';
 
 export default function MovieDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -148,16 +149,20 @@ export default function MovieDetailsPage() {
           </div>
         </div>
 
-        {cast.length > 0 && (
-          <div className="container mx-auto px-4 py-12">
-            <h2 className="text-2xl font-bold text-white mb-6">Cast</h2>
+        <div className="container mx-auto px-4 py-12">
+          <h2 className="text-2xl font-bold text-white mb-6">Cast</h2>
+          {loading ? (
+            <SkeletonGrid count={6} type="cast" />
+          ) : cast.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
               {cast.map((person) => (
                 <CastCard key={person.id} person={person} />
               ))}
             </div>
-          </div>
-        )}
+          ) : (
+            <p className="text-gray-400">No cast information available.</p>
+          )}
+        </div>
       </main>
 
       <Footer />
