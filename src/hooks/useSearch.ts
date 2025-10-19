@@ -1,14 +1,9 @@
 import { useState, useEffect } from 'react';
-import { tmdb } from '../config/tmdb';
-import type { Movie, Series } from '../config/types';
+import { fetchAPI } from '../api/apiClient';
+import { TMDB_ENDPOINTS } from '../config/tmdb';
+import type { Movie, Series, TMDBResponse, MediaType } from '../config/types';
 
-interface UseSearchResult {
-  results: (Movie | Series)[];
-  loading: boolean;
-  error: string | null;
-}
-
-export function useSearch(query: string, type: 'movie' | 'tv' = 'movie'): UseSearchResult {
+export function useSearch(query: string, mediaType: MediaType = 'movie') {
   const [results, setResults] = useState<(Movie | Series)[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -19,24 +14,24 @@ export function useSearch(query: string, type: 'movie' | 'tv' = 'movie'): UseSea
       return;
     }
 
-    const searchContent = async () => {
-      setLoading(true);
-      setError(null);
-
+    async function performSearch() {
       try {
-        const data = await tmdb.get(`/search/${type}?query=${encodeURIComponent(query)}`);
-        setResults(data.results);
-      } catch (err) {
+        setLoading(true);
+        setError(null);
+
+        const endpoint = mediaType === 'movie' ? TMDB_ENDPOINTS.searchMovies : TMDB_ENDPOINTS.searchSeries;
+        const data = await fetchAPI<TMDBResponse<Movie | Series>>(endpoint, { query });
+
+        setResults(data.results || []);
+      } catch {
         setError('Error searching. Please try again.');
-        console.error('Error searching:', err);
-        setResults([]);
       } finally {
         setLoading(false);
       }
-    };
+    }
 
-    searchContent();
-  }, [query, type]);
+    performSearch();
+  }, [query, mediaType]);
 
   return { results, loading, error };
 }
