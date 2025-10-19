@@ -1,45 +1,59 @@
 import { useState, useEffect } from 'react';
-import { tmdb } from '../config/tmdb';
-import type { Series } from '../config/types';
+import { fetchAPI } from '../api/apiClient';
+import { TMDB_ENDPOINTS } from '../config/tmdb';
+import type { Series, TMDBResponse, SeriesCategory } from '../config/types';
 
-interface UseSeriesResult {
-  series: Series[];
-  loading: boolean;
-  error: string | null;
-}
-
-export function useSeries(page: number = 1, genreId?: number): UseSeriesResult {
+export function useSeries(category: SeriesCategory = 'popular') {
   const [series, setSeries] = useState<Series[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
-  useEffect(() => {
-    const fetchSeries = async () => {
+  const getEndpoint = (cat: SeriesCategory) => ({
+    popular: TMDB_ENDPOINTS.popularSeries,
+    top_rated: TMDB_ENDPOINTS.topRatedSeries,
+  }[cat]);
+
+  const fetchSeries = async (pageNum: number, reset = false) => {
+    try {
       setLoading(true);
       setError(null);
 
-      try {
-        const endpoint = genreId
-          ? `/discover/tv?with_genres=${genreId}&page=${page}`
-          : `/tv/popular?page=${page}`;
+      const data = await fetchAPI<TMDBResponse<Series>>(getEndpoint(category), { page: pageNum });
 
-        const data = await tmdb.get(endpoint);
-        
-        if (page === 1) {
-          setSeries(data.results);
-        } else {
-          setSeries(prev => [...prev, ...data.results]);
-        }
-      } catch (err) {
-        setError('Error loading series. Please try again.');
-        console.error('Error fetching series:', err);
-      } finally {
-        setLoading(false);
+      if (reset) {
+        setSeries(data.results);
+      } else {
+        setSeries((prev) => {
+          const existingIds = new Set(prev.map((s) => s.id));
+          const unique = data.results.filter((s) => !existingIds.has(s.id));
+          return [...prev, ...unique];
+        });
       }
-    };
 
-    fetchSeries();
-  }, [page, genreId]);
+      setHasMore(pageNum < data.total_pages);
+    } catch {
+      setError('Error loading series. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  return { series, loading, error };
+  useEffect(() => {
+    setPage(1);
+    setSeries([]);
+    fetchSeries(1, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category]);
+
+  const loadMore = () => {
+    if (!loading && hasMore) {
+      const nextPage = page + 1;
+      setPage(nextPage);
+      fetchSeries(nextPage);
+    }
+  };
+
+  return { series, loading, error, loadMore, hasMore };
 }

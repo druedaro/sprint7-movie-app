@@ -1,11 +1,16 @@
-export const paths = {
-  home: '/',
-  auth: '/auth',
-  
-  movies: '/movies',
-  movieDetails: (id: string | number = ':id') => `/movies/${id}`,
-  series: '/series',
-  seriesDetails: (id: string | number = ':id') => `/series/${id}`,
-  actors: '/actors',
-  actorDetails: (id: string | number = ':id') => `/actors/${id}`,
+export const PATHS = {
+  HOME: '/',
+  AUTH: '/auth',
+
+  MOVIES: '/movies',
+  SERIES: '/series',
+  MOVIE_DETAILS: '/movie/:id',
+  SERIES_DETAILS: '/series/:id',
+  ACTOR_DETAILS: '/person/:id',
 } as const;
+
+export const buildPath = {
+  movieDetails: (id: number) => `/movie/${id}`,
+  seriesDetails: (id: number) => `/series/${id}`,
+  actorDetails: (id: number) => `/person/${id}`,
+};

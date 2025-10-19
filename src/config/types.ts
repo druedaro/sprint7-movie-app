@@ -1,9 +1,9 @@
-
 import type { ReactNode, ButtonHTMLAttributes, InputHTMLAttributes } from 'react';
 
 export interface Movie {
   id: number;
   title: string;
+  original_title: string;
   overview: string;
   poster_path: string | null;
   backdrop_path: string | null;
@@ -14,13 +14,14 @@ export interface Movie {
   genre_ids: number[];
   adult: boolean;
   original_language: string;
-  original_title: string;
   video: boolean;
 }
+
 
 export interface Series {
   id: number;
   name: string;
+  original_name: string;
   overview: string;
   poster_path: string | null;
   backdrop_path: string | null;
@@ -31,7 +32,26 @@ export interface Series {
   genre_ids: number[];
   origin_country: string[];
   original_language: string;
-  original_name: string;
+}
+
+
+export interface MovieDetails extends Movie {
+  genres: Genre[];
+  runtime: number;
+  budget: number;
+  revenue: number;
+  status: string;
+  tagline: string;
+}
+
+export interface SeriesDetails extends Series {
+  genres: Genre[];
+  episode_run_time: number[];
+  number_of_episodes: number;
+  number_of_seasons: number;
+  status: string;
+  tagline: string;
+  type: string;
 }
 
 export interface Genre {
@@ -39,10 +59,84 @@ export interface Genre {
   name: string;
 }
 
+
+
+export interface CastMember {
+  id: number;
+  name: string;
+  character: string;
+  profile_path: string | null;
+  order: number;
+  cast_id: number;
+  credit_id: string;
+}
+
+
+export interface Credits {
+  id: number;
+  cast: CastMember[];
+}
+
+
+export interface Person {
+  id: number;
+  name: string;
+  biography: string;
+  birthday: string | null;
+  deathday: string | null;
+  place_of_birth: string | null;
+  profile_path: string | null;
+  known_for_department: string;
+  gender: number;
+  popularity: number;
+  also_known_as: string[];
+}
+
+
+export interface MovieCredits {
+  id: number;
+  cast: Movie[];
+}
+
+
+export interface SeriesCredits {
+  id: number;
+  cast: Series[];
+}
+
+
+export interface Video {
+  id: string;
+  key: string;
+  name: string;
+  site: string;
+  type: string;
+  size: number;
+  official: boolean;
+}
+
+
+export interface TMDBResponse<T> {
+  page: number;
+  results: T[];
+  total_pages: number;
+  total_results: number;
+}
+
+
+
+
+
 export interface User {
   id: string;
   email: string;
+  user_metadata?: {
+    full_name?: string;
+    avatar_url?: string;
+  };
+  created_at: string;
 }
+
 
 export interface AuthContextType {
   user: User | null;
@@ -52,24 +146,14 @@ export interface AuthContextType {
   logout: () => Promise<void>;
 }
 
-export interface TMDBResponse<T> {
-  page: number;
-  results: T[];
-  total_pages: number;
-  total_results: number;
-}
 
 export type MediaType = 'movie' | 'tv';
 
-export type MovieCategory = 'popular' | 'top_rated' | 'upcoming';
 
-export type SeriesCategory = 'popular' | 'top_rated';
 
-export type AuthMode = 'login' | 'register';
 
-export interface ProtectedRouteProps {
-  children: ReactNode;
-}
+
+
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline';
@@ -83,157 +167,43 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   helperText?: string;
 }
 
-export interface MovieDetails extends Movie {
-  budget: number;
-  revenue: number;
-  runtime: number;
-  status: string;
-  tagline: string;
-  production_companies: ProductionCompany[];
-  production_countries: ProductionCountry[];
-  spoken_languages: SpokenLanguage[];
+export interface MovieCardProps {
+  movie: Movie;
+  onClick: () => void;
 }
 
-export interface ProductionCompany {
-  id: number;
-  name: string;
-  logo_path: string | null;
-  origin_country: string;
+export interface SeriesCardProps {
+  series: Series;
+  onClick: () => void;
 }
 
-export interface ProductionCountry {
-  iso_3166_1: string;
-  name: string;
+export interface CastCardProps {
+  cast: CastMember;
+  onClick?: () => void;
 }
 
-export interface SpokenLanguage {
-  english_name: string;
-  iso_639_1: string;
-  name: string;
+export interface SearchBarProps {
+  value: string;
+  onChange: (value: string) => void;
+  onSearch: () => void;
+  placeholder?: string;
 }
 
-export interface Cast {
-  id: number;
-  name: string;
-  character: string;
-  profile_path: string | null;
-  order: number;
+export interface FilterProps {
+  genres: Genre[];
+  selectedGenre?: number;
+  selectedYear?: number;
+  onGenreChange: (genreId?: number) => void;
+  onYearChange: (year?: number) => void;
 }
 
-export interface Crew {
-  id: number;
-  name: string;
-  job: string;
-  department: string;
-  profile_path: string | null;
+export interface ProtectedRouteProps {
+  children: ReactNode;
+  redirectTo?: string;
 }
 
-export interface Video {
-  id: string;
-  key: string;
-  name: string;
-  site: string;
-  type: string;
-  official: boolean;
-  size: number;
-}
+export type MovieCategory = 'popular' | 'top_rated' | 'upcoming';
 
-export interface SeriesDetails extends Series {
-  created_by: Creator[];
-  episode_run_time: number[];
-  in_production: boolean;
-  languages: string[];
-  last_air_date: string;
-  last_episode_to_air: Episode | null;
-  next_episode_to_air: Episode | null;
-  networks: Network[];
-  number_of_episodes: number;
-  number_of_seasons: number;
-  production_companies: ProductionCompany[];
-  production_countries: ProductionCountry[];
-  seasons: Season[];
-  spoken_languages: SpokenLanguage[];
-  status: string;
-  tagline: string;
-  type: string;
-}
+export type SeriesCategory = 'popular' | 'top_rated';
 
-export interface Creator {
-  id: number;
-  credit_id: string;
-  name: string;
-  gender: number;
-  profile_path: string | null;
-}
-
-export interface Episode {
-  id: number;
-  name: string;
-  overview: string;
-  vote_average: number;
-  vote_count: number;
-  air_date: string;
-  episode_number: number;
-  production_code: string;
-  runtime: number;
-  season_number: number;
-  show_id: number;
-  still_path: string | null;
-}
-
-export interface Network {
-  id: number;
-  logo_path: string | null;
-  name: string;
-  origin_country: string;
-}
-
-export interface Season {
-  air_date: string;
-  episode_count: number;
-  id: number;
-  name: string;
-  overview: string;
-  poster_path: string | null;
-  season_number: number;
-}
-
-export interface PersonDetails {
-  id: number;
-  name: string;
-  biography: string;
-  birthday: string | null;
-  deathday: string | null;
-  gender: number;
-  known_for_department: string;
-  place_of_birth: string | null;
-  popularity: number;
-  profile_path: string | null;
-  adult: boolean;
-  imdb_id: string | null;
-  homepage: string | null;
-}
-
-export interface MovieCredit {
-  id: number;
-  title: string;
-  character: string;
-  release_date: string;
-  poster_path: string | null;
-  vote_average: number;
-  popularity: number;
-  overview: string;
-  genre_ids: number[];
-}
-
-export interface TVCredit {
-  id: number;
-  name: string;
-  character: string;
-  first_air_date: string;
-  poster_path: string | null;
-  vote_average: number;
-  popularity: number;
-  overview: string;
-  genre_ids: number[];
-}
+export type AuthMode = 'login' | 'register';

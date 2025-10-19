@@ -1,52 +1,41 @@
 import { useState, useEffect } from 'react';
-import { tmdb } from '../config/tmdb';
-import type { MovieDetails, Cast, Video } from '../config/types';
+import { fetchAPI } from '../api/apiClient';
+import { TMDB_ENDPOINTS } from '../config/tmdb';
+import type { MovieDetails, Credits, Video } from '../config/types';
 
-interface UseMovieDetailsResult {
-  movie: MovieDetails | null;
-  cast: Cast[];
-  videos: Video[];
-  loading: boolean;
-  error: string | null;
-}
-
-export function useMovieDetails(movieId: string): UseMovieDetailsResult {
+export function useMovieDetails(movieId: number | undefined) {
   const [movie, setMovie] = useState<MovieDetails | null>(null);
-  const [cast, setCast] = useState<Cast[]>([]);
+  const [credits, setCredits] = useState<Credits | null>(null);
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchMovieDetails = async () => {
-      if (!movieId) return;
+    if (!movieId) return;
 
-      setLoading(true);
-      setError(null);
-
+    const fetchMovieData = async () => {
       try {
+        setLoading(true);
+        setError(null);
+
         const [movieData, creditsData, videosData] = await Promise.all([
-          tmdb.get(`/movie/${movieId}`),
-          tmdb.get(`/movie/${movieId}/credits`),
-          tmdb.get(`/movie/${movieId}/videos`)
+          fetchAPI<MovieDetails>(TMDB_ENDPOINTS.movieDetails(movieId)),
+          fetchAPI<Credits>(TMDB_ENDPOINTS.movieCredits(movieId)),
+          fetchAPI<{ results: Video[] }>(TMDB_ENDPOINTS.movieVideos(movieId)),
         ]);
 
         setMovie(movieData);
-        setCast(creditsData.cast.slice(0, 10));
-        setVideos(videosData.results.filter((video: Video) => 
-          video.type === 'Trailer' && video.site === 'YouTube'
-        ).slice(0, 3));
-
-      } catch (err) {
-        setError('Error loading movie details. Please try again.');
-        console.error('Error fetching movie details:', err);
+        setCredits(creditsData);
+        setVideos(videosData.results);
+      } catch {
+        setError('Error loading movie details.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMovieDetails();
+    fetchMovieData();
   }, [movieId]);
 
-  return { movie, cast, videos, loading, error };
+  return { movie, credits, videos, loading, error };
 }

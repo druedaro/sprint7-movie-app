@@ -1,31 +1,32 @@
 import { useState, useEffect } from 'react';
-import { tmdb } from '../config/tmdb';
-import type { Genre } from '../config/types';
+import { fetchAPI } from '../api/apiClient';
+import { TMDB_ENDPOINTS } from '../config/tmdb';
+import type { Genre, MediaType } from '../config/types';
 
-interface UseGenresResult {
-  genres: Genre[];
-  loading: boolean;
-}
-
-export function useGenres(type: 'movie' | 'tv' = 'movie'): UseGenresResult {
+export function useGenres(mediaType: MediaType = 'movie') {
   const [genres, setGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        const data = await tmdb.get(`/genre/${type}/list`);
-        setGenres(data.genres);
-      } catch (err) {
-        console.error('Error fetching genres:', err);
-        setGenres([]);
+        setLoading(true);
+        setError(null);
+
+        const endpoint = mediaType === 'movie' ? TMDB_ENDPOINTS.movieGenres : TMDB_ENDPOINTS.tvGenres;
+        const data = await fetchAPI<{ genres: Genre[] }>(endpoint);
+        
+        setGenres(data.genres || []);
+      } catch {
+        setError('Error loading genres.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchGenres();
-  }, [type]);
+  }, [mediaType]);
 
-  return { genres, loading };
+  return { genres, loading, error };
 }

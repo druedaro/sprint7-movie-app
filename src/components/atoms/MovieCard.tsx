@@ -1,47 +1,37 @@
-import { Link } from 'react-router-dom';
-import type { Movie } from '../../config/types';
+import { getImageUrl, IMAGE_SIZES } from '../../config/tmdb';
 import { formatYear, formatRating } from '../../utils/format';
+import type { MovieCardProps } from '../../config/types';
 
-interface MovieCardProps {
-  movie: Movie;
-}
-
-export default function MovieCard({ movie }: MovieCardProps) {
-  const imageUrl = movie.poster_path
-    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-    : 'https://via.placeholder.com/500x750?text=No+Image';
+export default function MovieCard({ movie, onClick }: MovieCardProps) {
+  const imageUrl = getImageUrl(movie.poster_path, IMAGE_SIZES.poster.medium);
+  const year = formatYear(movie.release_date);
+  const rating = formatRating(movie.vote_average);
 
   return (
-    <Link
-      to={`/movies/${movie.id}`}
-      className="group card-glass overflow-hidden hover:scale-105 transition-transform duration-300"
+    <div 
+      onClick={onClick}
+      className="group cursor-pointer card-glass card-glass-hover"
     >
-      <div className="relative aspect-[2/3] overflow-hidden bg-slate-800">
-        <img
-          src={imageUrl}
+      <div className="relative aspect-[2/3] overflow-hidden bg-gray-800">
+        <img 
+          src={imageUrl} 
           alt={movie.title}
+          className="w-full h-full object-cover"
           loading="lazy"
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
         
-        {movie.vote_average > 0 && (
-          <div className="absolute top-2 right-2 bg-black/80 backdrop-blur-sm px-2 py-1 rounded-lg">
-            <span className="text-primary-400 font-bold text-sm">
-              ⭐ {formatRating(movie.vote_average)}
-            </span>
-          </div>
-        )}
+        <div className="absolute top-2 right-2 bg-black/80 backdrop-blur-sm text-white px-2 py-1 rounded-md flex items-center gap-1">
+          <span className="text-yellow-400">⭐</span>
+          <span className="text-sm font-medium">{rating}</span>
+        </div>
       </div>
 
       <div className="p-4">
-        <h3 className="text-white font-semibold text-lg mb-1 line-clamp-2 group-hover:text-primary-400 transition-colors">
+        <h3 className="font-semibold text-white line-clamp-1 group-hover:text-primary-400 transition-colors">
           {movie.title}
         </h3>
-        
-        <p className="text-gray-400 text-sm">
-          {movie.release_date ? formatYear(movie.release_date) : 'N/A'}
-        </p>
+        <p className="text-sm text-gray-400 mt-1">{year}</p>
       </div>
-    </Link>
+    </div>
   );
 }

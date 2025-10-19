@@ -1,168 +1,133 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useMovieDetails } from '../hooks/useMovieDetails';
+import { getImageUrl, IMAGE_SIZES } from '../config/tmdb';
 import Navbar from '../components/organisms/Navbar';
 import Footer from '../components/organisms/Footer';
 import CastCard from '../components/atoms/CastCard';
-import { useMovieDetails } from '../hooks/useMovieDetails';
-import { formatYear, formatRating, formatRuntime } from '../utils/format';
-import SkeletonGrid from '../components/molecules/SkeletonGrid';
+import Button from '../components/atoms/Button';
 
 export default function MovieDetailsPage() {
   const { id } = useParams<{ id: string }>();
-  const { movie, cast, videos, loading, error } = useMovieDetails(id!);
+  const navigate = useNavigate();
+  const { movie, credits, videos, loading, error } = useMovieDetails(Number(id));
+
+  const handleActorClick = (actorId: number) => {
+    navigate(`/person/${actorId}`);
+  };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-app flex flex-col">
-        <Navbar />
-        <main className="flex-1 flex items-center justify-center">
-          <div className="spinner-lime" />
-        </main>
-        <Footer />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-app">
+        <div className="animate-spin rounded-full h-12 w-12 border-2 spinner-lime"></div>
       </div>
     );
   }
 
   if (error || !movie) {
     return (
-      <div className="min-h-screen bg-gradient-app flex flex-col">
+      <div className="min-h-screen flex flex-col bg-gradient-app">
         <Navbar />
-        <main className="flex-1 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-white mb-4">Movie not found</h1>
-            <Link to="/movies" className="text-primary-400 hover:text-primary-300">
-              ← Back to movies
-            </Link>
+            <p className="text-red-300 mb-4">{error || 'Movie not found'}</p>
+            <Button 
+              onClick={() => navigate('/movies')}
+              className="btn-primary"
+            >
+              Back to movies
+            </Button>
           </div>
-        </main>
-        <Footer />
+        </div>
       </div>
     );
   }
 
-  const backdropUrl = movie.backdrop_path
-    ? `https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`
-    : null;
-
-  const posterUrl = movie.poster_path
-    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-    : 'https://via.placeholder.com/500x750?text=No+Image';
+  const backdropUrl = getImageUrl(movie.backdrop_path, IMAGE_SIZES.backdrop.large);
+  const posterUrl = getImageUrl(movie.poster_path, IMAGE_SIZES.poster.large);
+  const trailer = videos.find((v) => v.type === 'Trailer' && v.site === 'YouTube');
 
   return (
-    <div className="min-h-screen bg-gradient-app flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-app">
       <Navbar />
 
-      <main className="flex-1">
-        <div
-          className="relative bg-cover bg-center bg-no-repeat"
-          style={backdropUrl ? { backgroundImage: `url(${backdropUrl})` } : undefined}
-        >
-          <div className="absolute inset-0 bg-black/60" />
-          
-          <div className="relative container mx-auto px-4 py-12">
-            <div className="flex flex-col lg:flex-row gap-8">
-              <div className="flex-shrink-0">
-                <img
-                  src={posterUrl}
-                  alt={movie.title}
-                  className="w-80 max-w-full mx-auto lg:mx-0 rounded-lg shadow-2xl"
-                />
-              </div>
+      <div 
+        className="relative h-96 bg-cover bg-center"
+        style={{ backgroundImage: `url(${backdropUrl})` }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent"></div>
+      </div>
 
-              <div className="flex-1 text-white">
-                <div className="mb-4">
-                  <Link to="/movies" className="text-gray-300 hover:text-white text-sm">
-                    Movies
-                  </Link>
-                  <span className="text-gray-500 text-sm mx-2">/</span>
-                  <span className="text-sm">{movie.title}</span>
-                </div>
+      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-64 relative z-10 pb-12">
+        <div className="flex flex-col md:flex-row gap-8 mb-12">
+          <div className="flex-shrink-0">
+            <img 
+              src={posterUrl} 
+              alt={movie.title}
+              className="w-64 rounded-lg shadow-2xl"
+            />
+          </div>
 
-                <h1 className="text-4xl md:text-5xl font-bold mb-2">
-                  {movie.title}
-                </h1>
-
-                {movie.tagline && (
-                  <p className="text-xl text-gray-300 italic mb-6">
-                    "{movie.tagline}"
-                  </p>
-                )}
-
-                <div className="flex flex-wrap gap-6 mb-6 text-sm">
-                  <div className="flex items-center gap-2">
-                    <span className="text-primary-400">⭐</span>
-                    <span>{formatRating(movie.vote_average)}</span>
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <span className="text-primary-400">📅</span>
-                    <span>{movie.release_date ? formatYear(movie.release_date) : 'N/A'}</span>
-                  </div>
-                  
-                  {movie.runtime && (
-                    <div className="flex items-center gap-2">
-                      <span className="text-primary-400">⏱️</span>
-                      <span>{formatRuntime(movie.runtime)}</span>
-                    </div>
-                  )}
-                </div>
-
-                {movie.genres && movie.genres.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {movie.genres.map((genre) => (
-                      <span
-                        key={genre.id}
-                        className="px-3 py-1 bg-primary-400/20 text-primary-400 rounded-full text-sm"
-                      >
-                        {genre.name}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                <div className="mb-6">
-                  <h2 className="text-xl font-semibold mb-3">Overview</h2>
-                  <p className="text-gray-300 leading-relaxed">
-                    {movie.overview || 'No overview available.'}
-                  </p>
-                </div>
-
-                {videos.length > 0 && (
-                  <div>
-                    <h2 className="text-xl font-semibold mb-3">Trailers</h2>
-                    <div className="flex gap-4 overflow-x-auto pb-2">
-                      {videos.map((video) => (
-                        <a
-                          key={video.id}
-                          href={`https://www.youtube.com/watch?v=${video.key}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-shrink-0 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors text-sm font-medium"
-                        >
-                          ▶️ {video.name}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
+          <div className="flex-1 text-white">
+            <h1 className="text-4xl font-bold mb-2">{movie.title}</h1>
+            <p className="text-gray-300 mb-4">{movie.tagline}</p>
+            
+            <div className="flex items-center gap-4 mb-6">
+              <span className="flex items-center gap-1">
+                <span className="text-yellow-400">⭐</span>
+                <span className="font-semibold">{movie.vote_average.toFixed(1)}</span>
+              </span>
+              <span>{new Date(movie.release_date).getFullYear()}</span>
+              <span>{movie.runtime} min</span>
             </div>
+
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-2">Synopsis</h3>
+              <p className="text-gray-300 leading-relaxed">{movie.overview}</p>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mb-6">
+              {movie.genres.map((genre) => (
+                <span 
+                  key={genre.id}
+                  className="px-3 py-1 bg-primary-400/20 backdrop-blur-sm border border-primary-400/50 rounded-full text-sm text-primary-300"
+                >
+                  {genre.name}
+                </span>
+              ))}
+            </div>
+
+            {trailer && (
+              <a 
+                href={`https://www.youtube.com/watch?v=${trailer.key}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button 
+                  variant="primary" 
+                  size="lg"
+                  className="btn-primary"
+                >
+                  ▶️ Watch Trailer
+                </Button>
+              </a>
+            )}
           </div>
         </div>
 
-        <div className="container mx-auto px-4 py-12">
-          <h2 className="text-2xl font-bold text-white mb-6">Cast</h2>
-          {loading ? (
-            <SkeletonGrid count={6} type="cast" />
-          ) : cast.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {cast.map((person) => (
-                <CastCard key={person.id} person={person} />
+        {credits && credits.cast.length > 0 && (
+          <div className="card-glass p-6">
+            <h2 className="text-2xl font-bold text-white mb-6">Cast</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {credits.cast.slice(0, 12).map((actor) => (
+                <CastCard
+                  key={actor.id}
+                  cast={actor}
+                  onClick={() => handleActorClick(actor.id)}
+                />
               ))}
             </div>
-          ) : (
-            <p className="text-gray-400">No cast information available.</p>
-          )}
-        </div>
+          </div>
+        )}
       </main>
 
       <Footer />

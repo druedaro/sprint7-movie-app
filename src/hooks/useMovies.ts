@@ -1,45 +1,63 @@
 import { useState, useEffect } from 'react';
-import { tmdb } from '../config/tmdb';
-import type { Movie } from '../config/types';
+import { fetchAPI } from '../api/apiClient';
+import { TMDB_ENDPOINTS } from '../config/tmdb';
+import type { Movie, TMDBResponse, MovieCategory } from '../config/types';
 
-interface UseMoviesResult {
-  movies: Movie[];
-  loading: boolean;
-  error: string | null;
-}
-
-export function useMovies(page: number = 1, genreId?: number): UseMoviesResult {
+export function useMovies(category: MovieCategory = 'popular') {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
-  useEffect(() => {
-    const fetchMovies = async () => {
+  const getEndpoint = (cat: MovieCategory) => {
+    const endpoints = {
+      popular: TMDB_ENDPOINTS.popularMovies,
+      top_rated: TMDB_ENDPOINTS.topRatedMovies,
+      upcoming: TMDB_ENDPOINTS.upcomingMovies,
+    };
+    return endpoints[cat];
+  };
+
+  const fetchMovies = async (pageNum: number, reset = false) => {
+    try {
       setLoading(true);
       setError(null);
 
-      try {
-        const endpoint = genreId
-          ? `/discover/movie?with_genres=${genreId}&page=${page}`
-          : `/movie/popular?page=${page}`;
+      const data = await fetchAPI<TMDBResponse<Movie>>(getEndpoint(category), { page: pageNum });
 
-        const data = await tmdb.get(endpoint);
-        
-        if (page === 1) {
-          setMovies(data.results);
-        } else {
-          setMovies(prev => [...prev, ...data.results]);
-        }
-      } catch (err) {
-        setError('Error loading movies. Please try again.');
-        console.error('Error fetching movies:', err);
-      } finally {
-        setLoading(false);
+      if (reset) {
+        setMovies(data.results);
+      } else {
+        setMovies((prev) => {
+          const existingIds = new Set(prev.map((m) => m.id));
+          const unique = data.results.filter((m) => !existingIds.has(m.id));
+          return [...prev, ...unique];
+        });
       }
-    };
 
-    fetchMovies();
-  }, [page, genreId]);
+      setHasMore(pageNum < data.total_pages);
+    } catch {
+      setError('Error loading movies. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  return { movies, loading, error };
+  useEffect(() => {
+    setPage(1);
+    setMovies([]);
+    fetchMovies(1, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category]);
+
+  const loadMore = () => {
+    if (!loading && hasMore) {
+      const nextPage = page + 1;
+      setPage(nextPage);
+      fetchMovies(nextPage);
+    }
+  };
+
+  return { movies, loading, error, loadMore, hasMore };
 }

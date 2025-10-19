@@ -1,52 +1,41 @@
 import { useState, useEffect } from 'react';
-import { tmdb } from '../config/tmdb';
-import type { SeriesDetails, Cast, Video } from '../config/types';
+import { fetchAPI } from '../api/apiClient';
+import { TMDB_ENDPOINTS } from '../config/tmdb';
+import type { SeriesDetails, Credits, Video } from '../config/types';
 
-interface UseSeriesDetailsResult {
-  series: SeriesDetails | null;
-  cast: Cast[];
-  videos: Video[];
-  loading: boolean;
-  error: string | null;
-}
-
-export function useSeriesDetails(seriesId: string): UseSeriesDetailsResult {
+export function useSeriesDetails(seriesId: number | undefined) {
   const [series, setSeries] = useState<SeriesDetails | null>(null);
-  const [cast, setCast] = useState<Cast[]>([]);
+  const [credits, setCredits] = useState<Credits | null>(null);
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchSeriesDetails = async () => {
-      if (!seriesId) return;
+    if (!seriesId) return;
 
-      setLoading(true);
-      setError(null);
-
+    const fetchSeriesData = async () => {
       try {
+        setLoading(true);
+        setError(null);
+
         const [seriesData, creditsData, videosData] = await Promise.all([
-          tmdb.get(`/tv/${seriesId}`),
-          tmdb.get(`/tv/${seriesId}/credits`),
-          tmdb.get(`/tv/${seriesId}/videos`)
+          fetchAPI<SeriesDetails>(TMDB_ENDPOINTS.seriesDetails(seriesId)),
+          fetchAPI<Credits>(TMDB_ENDPOINTS.seriesCredits(seriesId)),
+          fetchAPI<{ results: Video[] }>(TMDB_ENDPOINTS.seriesVideos(seriesId)),
         ]);
 
         setSeries(seriesData);
-        setCast(creditsData.cast.slice(0, 10)); 
-        setVideos(videosData.results.filter((video: Video) => 
-          video.type === 'Trailer' && video.site === 'YouTube'
-        ).slice(0, 3)); 
-
-      } catch (err) {
-        setError('Error loading series details. Please try again.');
-        console.error('Error fetching series details:', err);
+        setCredits(creditsData);
+        setVideos(videosData.results);
+      } catch {
+        setError('Error loading series details.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchSeriesDetails();
+    fetchSeriesData();
   }, [seriesId]);
 
-  return { series, cast, videos, loading, error };
+  return { series, credits, videos, loading, error };
 }

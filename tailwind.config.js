@@ -1,4 +1,3 @@
-/** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "./index.html",
@@ -83,6 +82,23 @@ export default {
             transform: 'scale(1.05)',
           }
         },
+        '.btn-outline': {
+          color: 'white',
+          fontWeight: theme('fontWeight.medium'),
+          paddingLeft: theme('spacing.4'),
+          paddingRight: theme('spacing.4'),
+          paddingTop: theme('spacing.2'),
+          paddingBottom: theme('spacing.2'),
+          borderRadius: theme('borderRadius.lg'),
+          borderWidth: '1px',
+          borderColor: 'rgb(255 255 255 / 0.3)',
+          transitionProperty: 'all',
+          transitionDuration: '300ms',
+          '&:hover': {
+            backgroundColor: 'rgb(255 255 255 / 0.1)',
+            borderColor: 'rgb(255 255 255 / 0.5)',
+          }
+        },
 
         '.nav-glass': {
           backgroundColor: 'rgb(0 0 0 / 0.2)',
@@ -97,6 +113,7 @@ export default {
           borderTopColor: 'rgb(255 255 255 / 0.1)',
         },
 
+        // Loading Spinner
         '.spinner-lime': {
           borderTopColor: 'rgb(193 215 72)',
           borderRightColor: 'transparent',
@@ -107,3 +124,4 @@ export default {
     }
   ],
 }
+

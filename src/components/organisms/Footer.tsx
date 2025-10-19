@@ -28,21 +28,14 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-white">About</h4>
+            <h4 className="text-lg font-semibold mb-4 text-white">Information</h4>
             <p className="text-sm text-gray-400">
               © 2025 The Corner Database
-              <br />
-              All rights reserved.
-              <br />
-              Powered by TMDB and TheCorner.
+            </p>
+            <p className="text-xs text-gray-500 mt-2">
+              This product uses the TMDB API and TheCorner logo but is not endorsed or certified by TMDB or TheCorner.
             </p>
           </div>
-        </div>
-
-        <div className="border-t border-white/10 mt-8 pt-6">
-          <p className="text-center text-sm text-gray-500">
-            This product uses the TMDB API but is not endorsed or certified by TMDB.
-          </p>
         </div>
       </div>
     </footer>
