@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { PATHS } from '../routes/paths';
 import Button from '../components/atoms/Button';
 import Footer from '../components/organisms/Footer';
 
@@ -20,13 +21,13 @@ export default function WelcomePage() {
             </Link>
             <div className="flex gap-2 sm:gap-3">
               {user ? (
-                <Link to="/movies">
+                <Link to={PATHS.MOVIES}>
                   <Button variant="primary" className="btn-primary" size="sm">
                     Go to App
                   </Button>
                 </Link>
               ) : (
-                <Link to="/auth">
+                <Link to={PATHS.AUTH}>
                   <Button variant="primary" className="btn-primary" size="sm">
                     Get Started
                   </Button>
@@ -60,7 +61,7 @@ export default function WelcomePage() {
               watch trailers, and curate your personal watchlist.
             </p>
 
-            <Link to={user ? "/movies" : "/register"}>
+            <Link to={user ? PATHS.MOVIES : PATHS.AUTH}>
               <Button 
                 size="lg"
                 className="btn-primary px-12 py-4 text-lg font-semibold shadow-2xl shadow-primary-400/50 transform hover:scale-105 transition-all duration-200"
