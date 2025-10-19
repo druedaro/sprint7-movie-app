@@ -4,23 +4,22 @@ A modern and optimized web application for exploring movies and series using **R
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
-- [Description](#-description)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Installation](#-installation)
-- [Available Scripts](#-available-scripts)
-- [Testing](#-testing)
-- [Project Structure](#-project-structure)
-- [Best Practices](#-best-practices)
-- [Deployment](#-deployment)
-- [To Do](#-to-do)
-]
+- [Description](#description)
+- [Features](#features)
+- [Tech-Stack](#tech-stack)
+- [Installation](#installation)
+- [Available-Scripts](#available-scripts)
+- [Testing](#testing)
+- [Project-Structure](#project-structure)
+- [Best-Practices](#best-practices)
+- [Deployment](#deployment)
+- [To-Do](#to-do)
 
 ---
 
-## 📖 Description
+## Description
 
 **MovieApp** is a modern movie content exploration application that integrates:
 
@@ -41,7 +40,7 @@ A modern and optimized web application for exploring movies and series using **R
 
 ---
 
-## ✨ Features
+## Features
 
 ### 🔐 Authentication
 - ✅ Login/Register with Supabase
@@ -73,7 +72,7 @@ A modern and optimized web application for exploring movies and series using **R
 
 ---
 
-## 🛠️ Tech Stack
+## Tech-Stack
 
 ### Core
 - **React 19.1** - Modern UI library with hooks
@@ -103,9 +102,10 @@ A modern and optimized web application for exploring movies and series using **R
 
 ---
 
-## 📦 Installation
+## Installation
 
-\`\`\`bash
+#
+```bash
 # Clone the repository
 git clone <repository-url>
 cd sprint7
@@ -117,24 +117,25 @@ npm install
 cp .env.example .env
 
 # Edit .env with your credentials
-\`\`\`
+```
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 ### Environment Variables
 
 Create a \`.env\` file in the project root:
 
-\`\`\`env
+#
+```env
 # Supabase (Authentication)
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 # TMDB API (Movie Data)
 VITE_TMDB_API_KEY=your_tmdb_api_key
-\`\`\`
+```
 
 ### Getting Credentials
 
@@ -150,9 +151,10 @@ VITE_TMDB_API_KEY=your_tmdb_api_key
 
 ---
 
-## 📦 Available Scripts
+## Available-Scripts
 
-\`\`\`bash
+#
+```bash
 # Development
 npm run dev          # Start server at http://localhost:5173
 
@@ -161,17 +163,11 @@ npm run build        # Compile TypeScript + production build
 
 # Testing
 npm test             # Run tests with Vitest
-\`\`\`
+```
 
 ---
 
-## 🧪 Testing
-
-### Run Tests
-
-\`\`\`bash
-npm test              # Watch mode
-\`\`\`
+## Testing
 
 **Tests cover:**
 - ✅ Login/Logout flow
@@ -183,68 +179,77 @@ npm test              # Watch mode
 
 ---
 
-## 📁 Project Structure
 
-\`\`\`
+## Project-Structure
+
+```
 src/
-├── App.tsx                 # Root component with routing
-├── main.tsx                # Entry point
-├── index.css               # Global styles + Tailwind
+├── App.tsx
+├── main.tsx
+├── index.css
+├── setupTests.ts
+├── vitest-setup.d.ts
 │
 ├── api/
-│   └── apiClient.ts        # Fetch API wrapper for TMDB
+│   └── apiClient.ts
 │
 ├── auth/
-│   ├── AuthContext.tsx     # Authentication context
-│   ├── ProtectedRoute.tsx  # HOC for protected routes
-│   └── useAuth.ts          # Authentication hook
+│   └── AuthContext.tsx
 │
 ├── components/
-│   ├── atoms/              # Basic components
+│   ├── atoms/
 │   │   ├── Button.tsx
+│   │   ├── CastCard.tsx
 │   │   ├── Input.tsx
 │   │   ├── MovieCard.tsx
-│   │   ├── SeriesCard.tsx
-│   │   └── CastCard.tsx
-│   ├── molecules/          # Compound components
-│   │   ├── SearchBar.tsx
-│   │   └── FilterPanel.tsx
-│   └── organisms/          # Complex components
-│       ├── Navbar.tsx
-│       └── Footer.tsx
+│   │   └── SeriesCard.tsx
+│   ├── molecules/
+│   │   ├── FilterPanel.tsx
+│   │   └── SearchBar.tsx
+│   ├── organisms/
+│   │   ├── Footer.tsx
+│   │   └── Navbar.tsx
+│   └── utils/
+│       └── ScrollToTop.tsx
 │
 ├── config/
-│   ├── types.ts            # TypeScript interfaces
-│   ├── tmdb.ts             # TMDB configuration
-│   └── paths.ts            # Route constants
+│   ├── supabase.ts
+│   ├── tmdb.ts
+│   └── types.ts
 │
 ├── hooks/
-│   ├── useMovies.ts
-│   ├── useSeries.ts
-│   ├── useSearch.ts
 │   ├── useGenres.ts
+│   ├── useInfiniteScroll.ts
 │   ├── useMovieDetails.ts
-│   ├── useSeriesDetails.ts
+│   ├── useMovies.ts
 │   ├── usePersonDetails.ts
-│   └── useInfiniteScroll.ts
+│   ├── useSearch.ts
+│   ├── useSeries.ts
+│   └── useSeriesDetails.ts
 │
 ├── pages/
-│   ├── WelcomePage.tsx
+│   ├── ActorDetailsPage.tsx
 │   ├── AuthPage.tsx
-│   ├── MoviesPage.tsx
-│   ├── SeriesPage.tsx
 │   ├── MovieDetailsPage.tsx
+│   ├── MoviesPage.tsx
 │   ├── SeriesDetailsPage.tsx
-│   └── ActorDetailsPage.tsx
+│   ├── SeriesPage.tsx
+│   └── WelcomePage.tsx
+│
+├── routes/
+│   ├── ProtectedRoute.tsx
+│   └── paths.ts
 │
 └── utils/
-    ├── format.ts           # Formatting utilities
-    └── tests/              # Test files
-\`\`\`
+  ├── format.ts
+  └── tests/
+    ├── app.integration.test.tsx
+    └── app.moscow.test.ts
+```
 
 ---
 
-## 🎯 Best Practices Implemented
+## Best-Practices
 
 ### Code Quality
 - ✅ TypeScript strict mode
@@ -271,25 +276,25 @@ src/
 
 ---
 
-## 🚀 Deployment
+## Deployment
 
 ### Production Build
 
-\`\`\`bash
+```bash
 npm run build
-\`\`\`
+```
 
 Generates the \`dist/\` folder ready for deployment.
 
 ### Deploy to Vercel
 
-\`\`\`bash
+```bash
 # Install Vercel CLI
 npm i -g vercel
 
 # Deploy
 vercel --prod
-\`\`\`
+```
 
 ### Environment Variables in Vercel
 
@@ -300,7 +305,7 @@ Configure in Vercel Dashboard → Settings → Environment Variables:
 
 ---
 
-## 📝 To Do
+## To-Do
 
 - [ ] **Update forms:**  
   Refactor all forms to use **React Hook Form** with **Zod** validation for better user experience and data safety.
