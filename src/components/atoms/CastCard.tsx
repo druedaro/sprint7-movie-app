@@ -1,38 +1,31 @@
-import { Link } from 'react-router-dom';
-import type { Cast } from '../../config/types';
+import { getImageUrl, IMAGE_SIZES } from '../../config/tmdb';
+import type { CastCardProps } from '../../config/types';
 
-interface CastCardProps {
-  person: Cast;
-}
-
-export default function CastCard({ person }: CastCardProps) {
-  const imageUrl = person.profile_path
-    ? `https://image.tmdb.org/t/p/w500${person.profile_path}`
-    : 'https://via.placeholder.com/500x750?text=No+Photo';
+export default function CastCard({ cast, onClick }: CastCardProps) {
+  const imageUrl = getImageUrl(cast.profile_path, IMAGE_SIZES.profile.medium);
 
   return (
-    <Link
-      to={`/actors/${person.id}`}
-      className="group card-glass overflow-hidden hover:scale-105 transition-transform duration-300"
+    <div 
+      onClick={onClick}
+      className="group cursor-pointer bg-white rounded-lg shadow-md overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
     >
-      <div className="relative aspect-[3/4] overflow-hidden bg-slate-800">
-        <img
-          src={imageUrl}
-          alt={person.name}
+      <div className="relative aspect-[2/3] overflow-hidden bg-gray-200">
+        <img 
+          src={imageUrl} 
+          alt={cast.name}
+          className="w-full h-full object-cover"
           loading="lazy"
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
       </div>
 
       <div className="p-3">
-        <h3 className="text-white font-semibold text-sm mb-1 line-clamp-2 group-hover:text-primary-400 transition-colors">
-          {person.name}
-        </h3>
-        
-        <p className="text-gray-400 text-xs line-clamp-2">
-          {person.character}
+        <h4 className="font-semibold text-gray-900 text-sm line-clamp-1 group-hover:text-primary-600 transition-colors">
+          {cast.name}
+        </h4>
+        <p className="text-xs text-gray-500 mt-1 line-clamp-1">
+          {cast.character}
         </p>
       </div>
-    </Link>
+    </div>
   );
 }
