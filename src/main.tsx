@@ -9,6 +9,8 @@ import WelcomePage from './pages/WelcomePage';
 import AuthPage from './pages/AuthPage';
 import MoviesPage from './pages/MoviesPage';
 import MovieDetailsPage from './pages/MovieDetailsPage';
+import SeriesPage from './pages/SeriesPage';
+import SeriesDetailsPage from './pages/SeriesDetailsPage';
 
 import './index.css';
 
@@ -34,6 +36,22 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <MovieDetailsPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: paths.series,
+    element: (
+      <ProtectedRoute>
+        <SeriesPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: paths.seriesDetails(),
+    element: (
+      <ProtectedRoute>
+        <SeriesDetailsPage />
       </ProtectedRoute>
     ),
   },
