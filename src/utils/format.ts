@@ -1,18 +1,10 @@
-export function formatYear(date: string): string {
-  return new Date(date).getFullYear().toString();
-}
+export const formatYear = (dateString: string | null | undefined): string => {
+  if (!dateString) return 'N/A';
+  return new Date(dateString).getFullYear().toString();
+};
 
-export function formatRating(rating: number): string {
-  return (Math.round(rating * 10) / 10).toFixed(1);
-}
 
-export function formatRuntime(minutes: number): string {
-  const hours = Math.floor(minutes / 60);
-  const mins = minutes % 60;
-  
-  if (hours === 0) {
-    return `${mins}m`;
-  }
-  
-  return mins === 0 ? `${hours}h` : `${hours}h ${mins}m`;
-}
+export const formatRating = (rating: number | null | undefined, decimals = 1): string => {
+  if (rating === null || rating === undefined) return 'N/A';
+  return rating.toFixed(decimals);
+};
