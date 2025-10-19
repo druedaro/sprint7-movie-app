@@ -3,7 +3,7 @@ import Navbar from '../components/organisms/Navbar';
 import Footer from '../components/organisms/Footer';
 import CastCard from '../components/atoms/CastCard';
 import { useMovieDetails } from '../hooks/useMovieDetails';
-import { formatYear, formatRating } from '../utils/format';
+import { formatYear, formatRating, formatRuntime } from '../utils/format';
 
 export default function MovieDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -100,7 +100,7 @@ export default function MovieDetailsPage() {
                   {movie.runtime && (
                     <div className="flex items-center gap-2">
                       <span className="text-primary-400">⏱️</span>
-                      <span>{Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m</span>
+                      <span>{formatRuntime(movie.runtime)}</span>
                     </div>
                   )}
                 </div>
