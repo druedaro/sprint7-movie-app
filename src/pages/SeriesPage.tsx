@@ -9,6 +9,7 @@ import { useGenres } from '../hooks/useGenres';
 import { useSearch } from '../hooks/useSearch';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 import type { Series } from '../config/types';
+import SkeletonGrid from '../components/molecules/SkeletonGrid';
 
 export default function SeriesPage() {
   const [page, setPage] = useState(1);
@@ -79,20 +80,12 @@ export default function SeriesPage() {
             ))}
           </div>
         ) : loading ? (
-          <div className="flex justify-center items-center py-20">
-            <div className="spinner-lime" />
-          </div>
+          <SkeletonGrid count={20} type="card" />
         ) : (
           <div className="text-center py-20">
             <p className="text-gray-400 text-lg">
               {isSearching ? 'No series found' : 'No series available'}
             </p>
-          </div>
-        )}
-
-        {loading && displaySeries.length > 0 && (
-          <div className="flex justify-center py-8">
-            <div className="spinner-lime" />
           </div>
         )}
       </main>

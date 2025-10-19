@@ -9,6 +9,7 @@ import { useGenres } from '../hooks/useGenres';
 import { useSearch } from '../hooks/useSearch';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 import type { Movie } from '../config/types';
+import SkeletonGrid from '../components/molecules/SkeletonGrid';
 
 export default function MoviesPage() {
   const [page, setPage] = useState(1);
@@ -43,7 +44,7 @@ export default function MoviesPage() {
   return (
     <div className="min-h-screen bg-gradient-app flex flex-col">
       <Navbar />
-      
+
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">🎬 Movies</h1>
@@ -79,20 +80,12 @@ export default function MoviesPage() {
             ))}
           </div>
         ) : loading ? (
-          <div className="flex justify-center items-center py-20">
-            <div className="spinner-lime" />
-          </div>
+          <SkeletonGrid count={20} type="card" />
         ) : (
           <div className="text-center py-20">
             <p className="text-gray-400 text-lg">
               {isSearching ? 'No movies found' : 'No movies available'}
             </p>
-          </div>
-        )}
-
-        {loading && displayMovies.length > 0 && (
-          <div className="flex justify-center py-8">
-            <div className="spinner-lime" />
           </div>
         )}
       </main>

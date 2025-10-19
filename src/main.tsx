@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AuthProvider } from './auth/AuthContext';
 import ProtectedRoute from './routes/ProtectedRoute';
+import ScrollToTop from './components/utils/ScrollToTop';
 import { paths } from './routes/paths';
 
 import WelcomePage from './pages/WelcomePage';
@@ -18,50 +19,75 @@ import './index.css';
 const router = createBrowserRouter([
   {
     path: paths.home,
-    element: <WelcomePage />,
+    element: (
+      <>
+        <ScrollToTop />
+        <WelcomePage />
+      </>
+    ),
   },
   {
     path: paths.auth,
-    element: <AuthPage />,
+    element: (
+      <>
+        <ScrollToTop />
+        <AuthPage />
+      </>
+    ),
   },
   {
     path: paths.movies,
     element: (
-      <ProtectedRoute>
-        <MoviesPage />
-      </ProtectedRoute>
+      <>
+        <ScrollToTop />
+        <ProtectedRoute>
+          <MoviesPage />
+        </ProtectedRoute>
+      </>
     ),
   },
   {
     path: paths.movieDetails(),
     element: (
-      <ProtectedRoute>
-        <MovieDetailsPage />
-      </ProtectedRoute>
+      <>
+        <ScrollToTop />
+        <ProtectedRoute>
+          <MovieDetailsPage />
+        </ProtectedRoute>
+      </>
     ),
   },
   {
     path: paths.series,
     element: (
-      <ProtectedRoute>
-        <SeriesPage />
-      </ProtectedRoute>
+      <>
+        <ScrollToTop />
+        <ProtectedRoute>
+          <SeriesPage />
+        </ProtectedRoute>
+      </>
     ),
   },
   {
     path: paths.seriesDetails(),
     element: (
-      <ProtectedRoute>
-        <SeriesDetailsPage />
-      </ProtectedRoute>
+      <>
+        <ScrollToTop />
+        <ProtectedRoute>
+          <SeriesDetailsPage />
+        </ProtectedRoute>
+      </>
     ),
   },
   {
     path: paths.actorDetails(),
     element: (
-      <ProtectedRoute>
-        <ActorDetailsPage />
-      </ProtectedRoute>
+      <>
+        <ScrollToTop />
+        <ProtectedRoute>
+          <ActorDetailsPage />
+        </ProtectedRoute>
+      </>
     ),
   },
 ]);
