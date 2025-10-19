@@ -20,9 +20,6 @@ function App() {
         <Routes>
           <Route path={PATHS.HOME} element={<WelcomePage />} />
           <Route path={PATHS.AUTH} element={<AuthPage />} />
-          <Route path={PATHS.LOGIN} element={<AuthPage />} />
-          <Route path={PATHS.REGISTER} element={<AuthPage />} />
-
 
             <Route 
               path={PATHS.MOVIES} 

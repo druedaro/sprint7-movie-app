@@ -1,3 +1,5 @@
+import type { ReactNode, ButtonHTMLAttributes, InputHTMLAttributes } from 'react';
+
 export interface Movie {
   id: number;
   title: string;

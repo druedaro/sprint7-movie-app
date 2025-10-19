@@ -14,8 +14,8 @@ export default function Navbar() {
     try {
       await logout();
       navigate(location.pathname, { replace: true });
-    } catch (error) {
-      console.error('Error al cerrar sesión:', error);
+    } catch {
+      // Silent fail - auth context handles error state
     }
   };
 
