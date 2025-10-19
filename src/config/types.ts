@@ -197,3 +197,43 @@ export interface Season {
   poster_path: string | null;
   season_number: number;
 }
+
+export interface PersonDetails {
+  id: number;
+  name: string;
+  biography: string;
+  birthday: string | null;
+  deathday: string | null;
+  gender: number;
+  known_for_department: string;
+  place_of_birth: string | null;
+  popularity: number;
+  profile_path: string | null;
+  adult: boolean;
+  imdb_id: string | null;
+  homepage: string | null;
+}
+
+export interface MovieCredit {
+  id: number;
+  title: string;
+  character: string;
+  release_date: string;
+  poster_path: string | null;
+  vote_average: number;
+  popularity: number;
+  overview: string;
+  genre_ids: number[];
+}
+
+export interface TVCredit {
+  id: number;
+  name: string;
+  character: string;
+  first_air_date: string;
+  poster_path: string | null;
+  vote_average: number;
+  popularity: number;
+  overview: string;
+  genre_ids: number[];
+}
