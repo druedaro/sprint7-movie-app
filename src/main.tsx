@@ -11,6 +11,7 @@ import MoviesPage from './pages/MoviesPage';
 import MovieDetailsPage from './pages/MovieDetailsPage';
 import SeriesPage from './pages/SeriesPage';
 import SeriesDetailsPage from './pages/SeriesDetailsPage';
+import ActorDetailsPage from './pages/ActorDetailsPage';
 
 import './index.css';
 
@@ -52,6 +53,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <SeriesDetailsPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: paths.actorDetails(),
+    element: (
+      <ProtectedRoute>
+        <ActorDetailsPage />
       </ProtectedRoute>
     ),
   },
