@@ -46,8 +46,8 @@ A modern and optimized web application for exploring movies and series using **R
 - ✅ Protected routes
 - ✅ Persistent session
 - ✅ Automatic redirection
-- ✅ **React Hook Form + Zod validation**
-- ✅ **Real-time form validation**
+- ✅ React Hook Form + Zod validation
+- ✅ Real-time form validation
 
 ### 🎬 Content Exploration
 - ✅ Popular movies catalog
