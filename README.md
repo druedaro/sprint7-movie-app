@@ -15,7 +15,6 @@ A modern and optimized web application for exploring movies and series using **R
 - [Project-Structure](#project-structure)
 - [Best-Practices](#best-practices)
 - [Deployment](#deployment)
-- [To-Do](#to-do)
 
 ---
 
@@ -47,6 +46,8 @@ A modern and optimized web application for exploring movies and series using **R
 - ✅ Protected routes
 - ✅ Persistent session
 - ✅ Automatic redirection
+- ✅ **React Hook Form + Zod validation**
+- ✅ **Real-time form validation**
 
 ### 🎬 Content Exploration
 - ✅ Popular movies catalog
@@ -87,6 +88,11 @@ A modern and optimized web application for exploring movies and series using **R
 - **Supabase 2.47** - Authentication & Database
 - **TMDB API** - Movie/Series data
 - **Fetch API** - HTTP requests (native, no dependencies)
+
+### Forms & Validation
+- **React Hook Form 7.64** - Performant form management
+- **Zod 4.1** - TypeScript-first schema validation
+- **@hookform/resolvers 5.2** - Integration between RHF and Zod
 
 ### Routing
 - **React Router 7.9** - Client-side routing
@@ -200,6 +206,7 @@ src/
 │   ├── atoms/
 │   │   ├── Button.tsx
 │   │   ├── CastCard.tsx
+│   │   ├── FormInput.tsx
 │   │   ├── Input.tsx
 │   │   ├── MovieCard.tsx
 │   │   └── SeriesCard.tsx
@@ -209,6 +216,8 @@ src/
 │   ├── organisms/
 │   │   ├── Footer.tsx
 │   │   └── Navbar.tsx
+│   ├── templates/
+│   │   └── MediaListPage.tsx
 │   └── utils/
 │       └── ScrollToTop.tsx
 │
@@ -240,6 +249,9 @@ src/
 │   ├── ProtectedRoute.tsx
 │   └── paths.ts
 │
+├── schemas/
+│   └── authSchema.ts
+│
 └── utils/
   ├── format.ts
   └── tests/
@@ -257,6 +269,9 @@ src/
 - ✅ Custom hooks for reusable logic
 - ✅ Atomic Design pattern
 - ✅ Centralized configuration
+- ✅ DRY principle (reusable templates)
+- ✅ React Hook Form for form management
+- ✅ Zod schemas for validation
 
 ### Performance
 - ✅ Lazy loading images
@@ -302,13 +317,3 @@ Configure in Vercel Dashboard → Settings → Environment Variables:
 - \`VITE_SUPABASE_URL\`
 - \`VITE_SUPABASE_ANON_KEY\`
 - \`VITE_TMDB_API_KEY\`
-
----
-
-## To-Do
-
-- [ ] **Update forms:**  
-  Refactor all forms to use **React Hook Form** with **Zod** validation for better user experience and data safety.
-
-- [ ] **Add Scroll To Up component:**  
-  Implement a component that allows users to quickly scroll back to the top of the page, improving navigation for long lists (movies, series, actors).
