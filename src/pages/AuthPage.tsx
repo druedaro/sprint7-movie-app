@@ -1,53 +1,66 @@
 import { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '../auth/AuthContext';
+import { loginSchema, registerSchema } from '../schemas/authSchema';
+import type { LoginFormData, RegisterFormData } from '../schemas/authSchema';
 import Button from '../components/atoms/Button';
-import Input from '../components/atoms/Input';
+import FormInput from '../components/atoms/FormInput';
 import type { AuthMode } from '../config/types';
 
 export default function AuthPage() {
   const [mode, setMode] = useState<AuthMode>('login');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   
-  const { login, register } = useAuth();
+  const { login, register: registerUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/movies';
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register: registerLogin,
+    handleSubmit: handleLoginSubmit,
+    formState: { errors: loginErrors },
+    reset: resetLogin,
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    mode: 'onBlur',
+  });
+
+  const {
+    register: registerRegister,
+    handleSubmit: handleRegisterSubmit,
+    formState: { errors: registerErrors },
+    reset: resetRegister,
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    mode: 'onBlur',
+  });
+
+  const onLoginSubmit = async (data: LoginFormData) => {
     setError('');
-
-    if (mode === 'register') {
-      if (password !== confirmPassword) {
-        setError('Passwords do not match');
-        return;
-      }
-
-      if (password.length < 6) {
-        setError('Password must be at least 6 characters');
-        return;
-      }
-    }
-
     try {
-      if (mode === 'login') {
-        await login(email, password);
-        navigate(from, { replace: true });
-      } else {
-        await register(email, password);
-        navigate('/movies', { replace: true });
-      }
+      await login(data.email, data.password);
+      navigate(from, { replace: true });
     } catch (err) {
       const error = err as Error;
-      if (mode === 'register' && error.message.includes('already registered')) {
+      setError(error.message || 'Error signing in. Please try again.');
+    }
+  };
+
+  const onRegisterSubmit = async (data: RegisterFormData) => {
+    setError('');
+    try {
+      await registerUser(data.email, data.password);
+      navigate('/movies', { replace: true });
+    } catch (err) {
+      const error = err as Error;
+      if (error.message.includes('already registered')) {
         setError('This email is already registered. Try signing in.');
       } else {
-        setError(error.message || `Error ${mode === 'login' ? 'signing in' : 'creating account'}. Please try again.`);
+        setError(error.message || 'Error creating account. Please try again.');
       }
     }
   };
@@ -55,7 +68,8 @@ export default function AuthPage() {
   const switchMode = (newMode: AuthMode) => {
     setMode(newMode);
     setError('');
-    setConfirmPassword('');
+    resetLogin();
+    resetRegister();
   };
 
   return (
@@ -96,58 +110,84 @@ export default function AuthPage() {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {error && (
-            <div className="bg-red-500/10 border border-red-500/30 text-red-300 px-4 py-3 rounded-lg backdrop-blur-sm">
-              {error}
-            </div>
-          )}
+        {mode === 'login' ? (
+          <form onSubmit={handleLoginSubmit(onLoginSubmit)} className="space-y-6">
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/30 text-red-300 px-4 py-3 rounded-lg backdrop-blur-sm">
+                {error}
+              </div>
+            )}
 
-          <Input
-            type="email"
-            label="Email"
-            placeholder="you@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-
-          <Input
-            type="password"
-            label="Password"
-            placeholder="••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            helperText={mode === 'register' ? 'Minimum 6 characters' : undefined}
-            required
-          />
-
-          {mode === 'register' && (
-            <Input
-              type="password"
-              label="Confirm Password"
-              placeholder="••••••••"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
+            <FormInput
+              label="Email"
+              type="email"
+              placeholder="you@email.com"
+              error={loginErrors.email?.message}
+              {...registerLogin('email')}
             />
-          )}
 
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            className="w-full"
-          >
-            {mode === 'login' ? 'Sign In' : 'Create Account'}
-          </Button>
+            <FormInput
+              label="Password"
+              type="password"
+              placeholder="••••••••"
+              error={loginErrors.password?.message}
+              {...registerLogin('password')}
+            />
 
-          <p className="text-center text-sm">
-            <Link to="/" className="text-gray-400 hover:text-gray-300">
-              ← Back to home
-            </Link>
-          </p>
-        </form>
+            <Button type="submit" variant="primary" size="lg" className="w-full">
+              Sign In
+            </Button>
+
+            <p className="text-center text-sm">
+              <Link to="/" className="text-gray-400 hover:text-gray-300">
+                ← Back to home
+              </Link>
+            </p>
+          </form>
+        ) : (
+          <form onSubmit={handleRegisterSubmit(onRegisterSubmit)} className="space-y-6">
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/30 text-red-300 px-4 py-3 rounded-lg backdrop-blur-sm">
+                {error}
+              </div>
+            )}
+
+            <FormInput
+              label="Email"
+              type="email"
+              placeholder="you@email.com"
+              error={registerErrors.email?.message}
+              {...registerRegister('email')}
+            />
+
+            <FormInput
+              label="Password"
+              type="password"
+              placeholder="••••••••"
+              error={registerErrors.password?.message}
+              helperText={!registerErrors.password ? 'Minimum 6 characters' : undefined}
+              {...registerRegister('password')}
+            />
+
+            <FormInput
+              label="Confirm Password"
+              type="password"
+              placeholder="••••••••"
+              error={registerErrors.confirmPassword?.message}
+              {...registerRegister('confirmPassword')}
+            />
+
+            <Button type="submit" variant="primary" size="lg" className="w-full">
+              Create Account
+            </Button>
+
+            <p className="text-center text-sm">
+              <Link to="/" className="text-gray-400 hover:text-gray-300">
+                ← Back to home
+              </Link>
+            </p>
+          </form>
+        )}
       </div>
     </main>
   );
