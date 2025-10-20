@@ -56,10 +56,10 @@ export default function WelcomePage() {
               Discovery Platform
             </h1>
 
-            <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+            <h2 className="text-lg md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
               Explore thousands of movies and TV shows, get detailed information about actors, 
               watch trailers, and curate your personal watchlist.
-            </p>
+            </h2>
 
             <Link to={user ? PATHS.MOVIES : PATHS.AUTH}>
               <Button 
@@ -108,7 +108,7 @@ export default function WelcomePage() {
           </div>
         </section>
 
-        <section className="mt-16 md:mt-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="mt-16 mb-14 md:mt-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="text-4xl md:text-5xl font-bold text-white mb-2">10K+</div>

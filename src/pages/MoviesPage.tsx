@@ -113,13 +113,13 @@ export default function MoviesPage() {
 
         {!isLoading && hasMore && !isSearching && (
           <div ref={loaderRef} className="h-20 flex items-center justify-center">
-            <p className="text-gray-400">Cargando más...</p>
+            <p className="text-gray-400">Loading more...</p>
           </div>
         )}
 
         {!hasMore && filteredMovies.length > 0 && !isSearching && (
           <p className="text-center text-gray-400 py-8">
-            No hay más películas para mostrar
+            No more movies to show
           </p>
         )}
 
