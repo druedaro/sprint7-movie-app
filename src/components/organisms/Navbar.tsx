@@ -15,7 +15,7 @@ export default function Navbar() {
       await logout();
       navigate(location.pathname, { replace: true });
     } catch {
-      // Silent fail - auth context handles error state
+      alert('Error logging out. Please try again.');
     }
   };
 
