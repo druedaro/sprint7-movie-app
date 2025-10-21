@@ -14,23 +14,27 @@ export function useSearch(query: string, mediaType: MediaType = 'movie') {
       return;
     }
 
-    async function performSearch() {
-      try {
-        setLoading(true);
-        setError(null);
+    const debounceTimer = setTimeout(() => {
+      async function performSearch() {
+        try {
+          setLoading(true);
+          setError(null);
 
-        const endpoint = mediaType === 'movie' ? TMDB_ENDPOINTS.searchMovies : TMDB_ENDPOINTS.searchSeries;
-        const data = await fetchAPI<TMDBResponse<Movie | Series>>(endpoint, { query });
+          const endpoint = mediaType === 'movie' ? TMDB_ENDPOINTS.searchMovies : TMDB_ENDPOINTS.searchSeries;
+          const data = await fetchAPI<TMDBResponse<Movie | Series>>(endpoint, { query });
 
-        setResults(data.results || []);
-      } catch {
-        setError('Error searching. Please try again.');
-      } finally {
-        setLoading(false);
+          setResults(data.results || []);
+        } catch {
+          setError('Error searching. Please try again.');
+        } finally {
+          setLoading(false);
+        }
       }
-    }
 
-    performSearch();
+      performSearch();
+    }, 500);
+
+    return () => clearTimeout(debounceTimer);
   }, [query, mediaType]);
 
   return { results, loading, error };

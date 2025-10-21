@@ -1,19 +1,18 @@
-import { useState } from 'react';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import type { SearchBarProps } from '../../config/types';
 
 export default function SearchBar({ value, onChange, onSearch, placeholder = 'Search...' }: SearchBarProps) {
-  const [localValue, setLocalValue] = useState(value);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onChange(localValue);
     onSearch();
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.value);
+  };
+
   const handleClear = () => {
-    setLocalValue('');
     onChange('');
   };
 
@@ -23,11 +22,11 @@ export default function SearchBar({ value, onChange, onSearch, placeholder = 'Se
         <Input
           type="text"
           placeholder={placeholder}
-          value={localValue}
-          onChange={(e) => setLocalValue(e.target.value)}
+          value={value}
+          onChange={handleInputChange}
           className="pr-10"
         />
-        {localValue && (
+        {value && (
           <button
             type="button"
             onClick={handleClear}
