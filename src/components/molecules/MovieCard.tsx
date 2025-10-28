@@ -1,5 +1,5 @@
 import { getImageUrl, IMAGE_SIZES } from '../../config/tmdb';
-import { formatYear, formatRating } from '../../utils/format';
+import { formatYear, formatRating } from '../../utils/formatters';
 import type { MovieCardProps } from '../../config/interfaces';
 
 export default function MovieCard({ movie, onClick }: MovieCardProps) {

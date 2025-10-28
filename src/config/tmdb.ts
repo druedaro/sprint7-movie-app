@@ -44,6 +44,8 @@ export function getImageUrl(path: string | null, size: string = 'original'): str
   return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;
 }
 
+// TODO: Migrate to use buildTmdbImageUrl from api/tmdbHelpers.ts for better separation of concerns
+
 
 
 export const TMDB_ENDPOINTS = {
