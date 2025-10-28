@@ -1,166 +1,175 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
-import { useAuth } from '../../auth/AuthContext';
+import { renderHook, waitFor, act } from '@testing-library/react';
 import { useMediaList } from '../../hooks/useMediaList';
 import { useSearch } from '../../hooks/useSearch';
-import { mockUser, mockMovies, ERROR_MESSAGES } from './__mocks__/apiMocks';
+import { mockMovies } from './__mocks__/apiMocks';
+import { fetchAPI } from '../../api/apiClient';
+import type { TMDBResponse } from '../../config/interfaces';
 
-vi.mock('../../auth/AuthContext');
-vi.mock('../../hooks/useMediaList');
-vi.mock('../../hooks/useSearch');
+// Mock API client to test real hook error handling
+vi.mock('../../api/apiClient');
 
 describe('Core Functionality Tests', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  describe('Authentication', () => {
-    it('Should login user successfully', async () => {
-      const mockLogin = vi.fn().mockResolvedValue(mockUser);
-      vi.mocked(useAuth).mockReturnValue({
-        user: mockUser,
-        login: mockLogin,
-        register: vi.fn(),
-        logout: vi.fn(),
-        loading: false,
-      });
+  describe('Media List - Success & Failure Cases', () => {
+    it('Should fetch movies successfully', async () => {
+      // Mock successful API response
+      const mockResponse: TMDBResponse<typeof mockMovies[0]> = {
+        page: 1,
+        results: mockMovies,
+        total_pages: 10,
+        total_results: 100,
+      };
 
-      const { result } = renderHook(() => useAuth());
+      vi.mocked(fetchAPI).mockResolvedValueOnce(mockResponse);
 
+      const { result } = renderHook(() => useMediaList('movie', 'popular'));
+
+      // Initial loading state
+      expect(result.current.loading).toBe(true);
+      expect(result.current.items).toHaveLength(0);
+
+      // Wait for data to load
       await waitFor(() => {
-        expect(result.current.user).toEqual(mockUser);
         expect(result.current.loading).toBe(false);
       });
+
+      // Verify success state
+      expect(result.current.items).toHaveLength(3);
+      expect(result.current.error).toBeNull();
+      expect(result.current.hasMore).toBe(true);
     });
 
-    it('Should handle login failure', async () => {
-      const mockLogin = vi.fn().mockRejectedValue(new Error(ERROR_MESSAGES.INVALID_CREDENTIALS));
-      vi.mocked(useAuth).mockReturnValue({
-        user: null,
-        login: mockLogin,
-        register: vi.fn(),
-        logout: vi.fn(),
-        loading: false,
+    it('Should handle API errors gracefully', async () => {
+      // Mock API failure
+      vi.mocked(fetchAPI).mockRejectedValueOnce(new Error('API Error'));
+
+      const { result } = renderHook(() => useMediaList('movie', 'popular'));
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
       });
 
-      const { result } = renderHook(() => useAuth());
-      await expect(result.current.login('test@test.com', 'wrong')).rejects.toThrow(
-        ERROR_MESSAGES.INVALID_CREDENTIALS
+      // Verify error state
+      expect(result.current.error).toBe('Error loading movies. Please try again.');
+      expect(result.current.items).toHaveLength(0);
+    });
+
+    it('Should handle network errors', async () => {
+      // Mock network failure
+      vi.mocked(fetchAPI).mockRejectedValueOnce(new Error('Network error'));
+
+      const { result } = renderHook(() => useMediaList('tv', 'popular'));
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // Verify error state for series
+      expect(result.current.error).toBe('Error loading series. Please try again.');
+      expect(result.current.items).toHaveLength(0);
+    });
+
+    it('Should show loading state while fetching', () => {
+      // Mock pending promise
+      vi.mocked(fetchAPI).mockImplementation(
+        () => new Promise(() => {}) // Never resolves
       );
+
+      const { result } = renderHook(() => useMediaList('movie', 'popular'));
+
+      // Should be loading
+      expect(result.current.loading).toBe(true);
+      expect(result.current.items).toHaveLength(0);
+      expect(result.current.error).toBeNull();
     });
 
-    it('Should logout user successfully', async () => {
-      const mockLogout = vi.fn().mockResolvedValue(undefined);
-      vi.mocked(useAuth).mockReturnValue({
-        user: null,
-        login: vi.fn(),
-        register: vi.fn(),
-        logout: mockLogout,
-        loading: false,
-      });
+    it('Should load more content with pagination', async () => {
+      const mockResponse: TMDBResponse<typeof mockMovies[0]> = {
+        page: 1,
+        results: mockMovies,
+        total_pages: 10,
+        total_results: 100,
+      };
 
-      const { result } = renderHook(() => useAuth());
-      await result.current.logout();
-
-      expect(mockLogout).toHaveBeenCalled();
-      expect(result.current.user).toBeNull();
-    });
-  });
-
-  describe('Media List', () => {
-    it('Should fetch movies successfully', async () => {
-      vi.mocked(useMediaList).mockReturnValue({
-        items: mockMovies,
-        loading: false,
-        error: null,
-        hasMore: true,
-        loadMore: vi.fn(),
-      });
+      vi.mocked(fetchAPI).mockResolvedValue(mockResponse);
 
       const { result } = renderHook(() => useMediaList('movie', 'popular'));
 
       await waitFor(() => {
         expect(result.current.items).toHaveLength(3);
-        expect(result.current.error).toBeNull();
-      });
-    });
-
-    it('Should handle API errors', async () => {
-      vi.mocked(useMediaList).mockReturnValue({
-        items: [],
-        loading: false,
-        error: ERROR_MESSAGES.FETCH_MOVIES_ERROR,
-        hasMore: false,
-        loadMore: vi.fn(),
       });
 
-      const { result } = renderHook(() => useMediaList('movie', 'popular'));
+      // Trigger load more wrapped in act
+      await act(async () => {
+        result.current.loadMore();
+      });
 
       await waitFor(() => {
-        expect(result.current.error).toBe(ERROR_MESSAGES.FETCH_MOVIES_ERROR);
-      });
-    });
-
-    it('Should show loading state', () => {
-      vi.mocked(useMediaList).mockReturnValue({
-        items: [],
-        loading: true,
-        error: null,
-        hasMore: false,
-        loadMore: vi.fn(),
+        expect(fetchAPI).toHaveBeenCalledTimes(2);
       });
 
-      const { result } = renderHook(() => useMediaList('movie', 'popular'));
-      expect(result.current.loading).toBe(true);
+      expect(result.current.hasMore).toBe(true);
     });
   });
 
-  describe('Search', () => {
-    it('Should search movies by title', async () => {
+  describe('Search - Success & Failure Cases', () => {
+    it('Should search movies successfully', async () => {
       const searchResult = mockMovies.find((m) => m.title === 'Fight Club')!;
-      vi.mocked(useSearch).mockReturnValue({
+      const mockResponse: TMDBResponse<typeof searchResult> = {
+        page: 1,
         results: [searchResult],
-        loading: false,
-        error: null,
-      });
+        total_pages: 1,
+        total_results: 1,
+      };
+
+      vi.mocked(fetchAPI).mockResolvedValueOnce(mockResponse);
 
       const { result } = renderHook(() => useSearch('Fight Club', 'movie'));
 
-      await waitFor(() => {
-        expect(result.current.results).toHaveLength(1);
-      });
+      // Wait for debounce and fetch
+      await waitFor(
+        () => {
+          expect(result.current.results).toHaveLength(1);
+        },
+        { timeout: 1000 }
+      );
+
+      expect(result.current.error).toBeNull();
+      expect(result.current.loading).toBe(false);
     });
 
-    it('Should handle search errors', async () => {
-      vi.mocked(useSearch).mockReturnValue({
-        results: [],
-        loading: false,
-        error: ERROR_MESSAGES.SEARCH_ERROR,
-      });
+    it('Should handle search API errors', async () => {
+      vi.mocked(fetchAPI).mockRejectedValueOnce(new Error('Search API Error'));
 
-      const { result } = renderHook(() => useSearch('test', 'movie'));
+      const { result } = renderHook(() => useSearch('test query', 'movie'));
 
-      await waitFor(() => {
-        expect(result.current.error).toBe(ERROR_MESSAGES.SEARCH_ERROR);
-      });
+      await waitFor(
+        () => {
+          expect(result.current.error).toBe('Error searching. Please try again.');
+        },
+        { timeout: 1000 }
+      );
+
+      expect(result.current.results).toHaveLength(0);
+      expect(result.current.loading).toBe(false);
     });
-  });
 
-  describe('Infinite Scroll', () => {
-    it('Should load more content', () => {
-      const loadMore = vi.fn();
-      vi.mocked(useMediaList).mockReturnValue({
-        items: mockMovies,
-        loading: false,
-        error: null,
-        hasMore: true,
-        loadMore,
+    it('Should return empty results for empty query', async () => {
+      const { result } = renderHook(() => useSearch('', 'movie'));
+
+      // Should not trigger API call
+      expect(result.current.results).toHaveLength(0);
+      expect(result.current.loading).toBe(false);
+      expect(result.current.error).toBeNull();
+
+      // Verify fetchAPI was never called
+      await waitFor(() => {
+        expect(fetchAPI).not.toHaveBeenCalled();
       });
-
-      const { result } = renderHook(() => useMediaList('movie', 'popular'));
-      result.current.loadMore();
-
-      expect(loadMore).toHaveBeenCalled();
     });
   });
 });
