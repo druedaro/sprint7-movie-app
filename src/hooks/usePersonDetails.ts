@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchAPI } from '../api/apiClient';
 import { TMDB_ENDPOINTS } from '../config/tmdb';
-import type { Person, MovieCredits, SeriesCredits } from '../config/types';
+import type { Person, MovieCredits, SeriesCredits } from '../config/interfaces';
 
 export function usePersonDetails(personId: number | undefined) {
   const [person, setPerson] = useState<Person | null>(null);

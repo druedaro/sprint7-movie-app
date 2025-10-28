@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchAPI } from '../api/apiClient';
 import { TMDB_ENDPOINTS } from '../config/tmdb';
-import type { Movie, Series, TMDBResponse } from '../config/types';
+import type { Movie, Series, TMDBResponse } from '../config/interfaces';
 
 // Union type para los tipos de media que soportamos
 type MediaItem = Movie | Series;

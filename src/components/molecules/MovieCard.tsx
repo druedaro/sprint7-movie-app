@@ -1,6 +1,6 @@
 import { getImageUrl, IMAGE_SIZES } from '../../config/tmdb';
 import { formatYear, formatRating } from '../../utils/format';
-import type { MovieCardProps } from '../../config/types';
+import type { MovieCardProps } from '../../config/interfaces';
 
 export default function MovieCard({ movie, onClick }: MovieCardProps) {
   const imageUrl = getImageUrl(movie.poster_path, IMAGE_SIZES.poster.medium);

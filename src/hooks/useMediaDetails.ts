@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchAPI } from '../api/apiClient';
 import { TMDB_ENDPOINTS } from '../config/tmdb';
-import type { MovieDetails, SeriesDetails, Credits, Video } from '../config/types';
+import type { MovieDetails, SeriesDetails, Credits, Video } from '../config/interfaces';
 
 // Union type para los detalles de media
 type MediaDetailsItem = MovieDetails | SeriesDetails;

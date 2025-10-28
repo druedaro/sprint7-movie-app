@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { supabase } from '../config/supabase';
-import type { AuthContextType, User } from '../config/types';
+import type { AuthContextType, User } from '../config/interfaces';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

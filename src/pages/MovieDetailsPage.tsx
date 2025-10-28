@@ -1,5 +1,5 @@
 import MediaDetailsPage from '../components/templates/MediaDetailsPage';
-import type { MovieDetails } from '../config/types';
+import type { MovieDetails } from '../config/interfaces';
 
 export default function MovieDetailsPage() {
   const config = {

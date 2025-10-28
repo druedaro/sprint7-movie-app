@@ -1,7 +1,7 @@
 import MediaListPage from '../components/templates/MediaListPage';
 import MovieCard from '../components/molecules/MovieCard';
 import { buildPath } from '../routes/paths';
-import type { Movie } from '../config/types';
+import type { Movie } from '../config/interfaces';
 
 export default function MoviesPage() {
   return (
