@@ -90,13 +90,15 @@ export default function MediaListPage<T extends MediaItem>({
             placeholder={`Search ${title.toLowerCase()}...`}
           />
 
-          <FilterPanel
-            genres={genres}
-            selectedGenre={selectedGenre}
-            selectedYear={selectedYear}
-            onGenreChange={setSelectedGenre}
-            onYearChange={setSelectedYear}
-          />
+          <div className="mt-6">
+            <FilterPanel
+              genres={genres}
+              selectedGenre={selectedGenre}
+              selectedYear={selectedYear}
+              onGenreChange={setSelectedGenre}
+              onYearChange={setSelectedYear}
+            />
+          </div>
 
           {error && (
             <div className="text-center py-8">

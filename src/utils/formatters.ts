@@ -20,19 +20,6 @@ export const formatRating = (rating: number | null | undefined, decimals = 1): s
 // URL Builders
 // ========================================
 
-export const buildImageUrl = (
-  baseUrl: string,
-  path: string | null,
-  size: string = '',
-  fallbackUrl?: string
-): string => {
-  if (!path) {
-    return fallbackUrl || 'https://via.placeholder.com/500x750?text=No+Image';
-  }
-  const separator = size ? '/' : '';
-  return `${baseUrl}${separator}${size}${path}`;
-};
-
 export const buildApiUrl = (
   baseUrl: string,
   endpoint: string,
