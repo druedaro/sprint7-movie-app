@@ -16,5 +16,3 @@ export async function fetchAPI<T>(
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   return response.json();
 }
-
-// TODO: Migrate to use fetchTmdbAPI from api/tmdbHelpers.ts for better separation of concerns
