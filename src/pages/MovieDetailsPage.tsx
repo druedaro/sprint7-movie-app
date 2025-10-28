@@ -1,15 +1,16 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useMovieDetails } from '../hooks/useMovieDetails';
+import { useMediaDetails } from '../hooks/useMediaDetails';
 import { getImageUrl, IMAGE_SIZES } from '../config/tmdb';
 import Navbar from '../components/organisms/Navbar';
 import Footer from '../components/organisms/Footer';
 import CastCard from '../components/atoms/CastCard';
 import Button from '../components/atoms/Button';
+import type { MovieDetails } from '../config/types';
 
 export default function MovieDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { movie, credits, videos, loading, error } = useMovieDetails(Number(id));
+  const { item: movie, credits, videos, loading, error } = useMediaDetails<MovieDetails>('movie', Number(id));
 
   const handleActorClick = (actorId: number) => {
     navigate(`/person/${actorId}`);

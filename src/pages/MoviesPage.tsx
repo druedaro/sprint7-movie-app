@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMovies } from '../hooks/useMovies';
+import { useMediaList } from '../hooks/useMediaList';
 import { useGenres } from '../hooks/useGenres';
 import { useSearch } from '../hooks/useSearch';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
@@ -20,7 +20,7 @@ export default function MoviesPage() {
 
   const navigate = useNavigate();
   const { genres } = useGenres('movie');
-  const { movies, loading, error, loadMore, hasMore } = useMovies('popular');
+  const { items: movies, loading, error, loadMore, hasMore } = useMediaList<Movie>('movie', 'popular');
   const { results, loading: searchLoading } = useSearch(searchQuery, 'movie');
   const loaderRef = useInfiniteScroll(loadMore, hasMore && !isSearching, loading);
 

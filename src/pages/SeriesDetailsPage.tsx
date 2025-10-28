@@ -1,15 +1,16 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useSeriesDetails } from '../hooks/useSeriesDetails';
+import { useMediaDetails } from '../hooks/useMediaDetails';
 import { getImageUrl, IMAGE_SIZES } from '../config/tmdb';
 import Navbar from '../components/organisms/Navbar';
 import Footer from '../components/organisms/Footer';
 import CastCard from '../components/atoms/CastCard';
 import Button from '../components/atoms/Button';
+import type { SeriesDetails } from '../config/types';
 
 export default function SeriesDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { series, credits, videos, loading, error } = useSeriesDetails(Number(id));
+  const { item: series, credits, videos, loading, error } = useMediaDetails<SeriesDetails>('tv', Number(id));
 
   if (loading) {
     return (

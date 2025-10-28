@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSeries } from '../hooks/useSeries';
+import { useMediaList } from '../hooks/useMediaList';
 import { useGenres } from '../hooks/useGenres';
 import { useSearch } from '../hooks/useSearch';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
@@ -20,7 +20,7 @@ export default function SeriesPage() {
 
   const navigate = useNavigate();
   const { genres } = useGenres('tv');
-  const { series, loading, error, loadMore, hasMore } = useSeries('popular');
+  const { items: series, loading, error, loadMore, hasMore } = useMediaList<Series>('tv', 'popular');
   const { results, loading: searchLoading } = useSearch(searchQuery, 'tv');
   const loaderRef = useInfiniteScroll(loadMore, hasMore && !isSearching, loading);
 
