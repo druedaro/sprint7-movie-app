@@ -54,7 +54,7 @@ export default {
         },
 
         '.bg-gradient-app': {
-          backgroundImage: 'linear-gradient(to bottom right, rgb(36 42 11), rgb(107 125 33), rgb(36 42 11))',
+          backgroundImage: 'linear-gradient(to bottom right, rgb(10 10 10), rgb(26 26 26), rgb(10 10 10))',
         },
 
         '.text-gradient-lime-white': {
