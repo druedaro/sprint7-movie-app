@@ -3,8 +3,8 @@ import { usePersonDetails } from '../hooks/usePersonDetails';
 import { getImageUrl, IMAGE_SIZES } from '../config/tmdb';
 import Navbar from '../components/organisms/Navbar';
 import Footer from '../components/organisms/Footer';
-import MovieCard from '../components/atoms/MovieCard';
-import SeriesCard from '../components/atoms/SeriesCard';
+import MovieCard from '../components/molecules/MovieCard';
+import SeriesCard from '../components/molecules/SeriesCard';
 import Button from '../components/atoms/Button';
 
 export default function ActorDetailsPage() {

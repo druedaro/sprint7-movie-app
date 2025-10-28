@@ -1,5 +1,5 @@
 import MediaListPage from '../components/templates/MediaListPage';
-import MovieCard from '../components/atoms/MovieCard';
+import MovieCard from '../components/molecules/MovieCard';
 import { buildPath } from '../routes/paths';
 import type { Movie } from '../config/types';
 

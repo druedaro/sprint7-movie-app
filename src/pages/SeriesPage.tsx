@@ -1,5 +1,5 @@
 import MediaListPage from '../components/templates/MediaListPage';
-import SeriesCard from '../components/atoms/SeriesCard';
+import SeriesCard from '../components/molecules/SeriesCard';
 import { buildPath } from '../routes/paths';
 import type { Series } from '../config/types';
 
