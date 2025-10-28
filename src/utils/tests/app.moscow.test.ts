@@ -1,232 +1,166 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
 import { useAuth } from '../../auth/AuthContext';
+import { useMediaList } from '../../hooks/useMediaList';
+import { useSearch } from '../../hooks/useSearch';
+import { mockUser, mockMovies, ERROR_MESSAGES } from './__mocks__/apiMocks';
 
-vi.mock('../../config/tmdbClient');
 vi.mock('../../auth/AuthContext');
-vi.mock('../../config/supabase');
+vi.mock('../../hooks/useMediaList');
+vi.mock('../../hooks/useSearch');
 
-describe('🎯 MUST HAVE - Critical Functionality', () => {
-  describe('useAuth Hook - User Authentication', () => {
-    it('MUST: Should allow user login', async () => {
-      const mockLogin = vi.fn().mockResolvedValue({ user: { id: '123', email: 'david@test.com' } });
-      
-      (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
-        user: null,
-        loading: false,
+describe('Core Functionality Tests', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  describe('Authentication', () => {
+    it('Should login user successfully', async () => {
+      const mockLogin = vi.fn().mockResolvedValue(mockUser);
+      vi.mocked(useAuth).mockReturnValue({
+        user: mockUser,
         login: mockLogin,
         register: vi.fn(),
         logout: vi.fn(),
+        loading: false,
       });
 
       const { result } = renderHook(() => useAuth());
 
-      await act(async () => {
-        await result.current.login('david@test.com', 'pass1234');
+      await waitFor(() => {
+        expect(result.current.user).toEqual(mockUser);
+        expect(result.current.loading).toBe(false);
       });
-
-      expect(mockLogin).toHaveBeenCalledWith('david@test.com', 'pass1234');
-      expect(mockLogin).toHaveBeenCalledTimes(1);
     });
 
-    it('MUST: Should allow user logout', async () => {
-      const mockLogout = vi.fn().mockResolvedValue(undefined);
-      
-      (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
-        user: { id: '123', email: 'david@test.com' },
+    it('Should handle login failure', async () => {
+      const mockLogin = vi.fn().mockRejectedValue(new Error(ERROR_MESSAGES.INVALID_CREDENTIALS));
+      vi.mocked(useAuth).mockReturnValue({
+        user: null,
+        login: mockLogin,
+        register: vi.fn(),
+        logout: vi.fn(),
         loading: false,
+      });
+
+      const { result } = renderHook(() => useAuth());
+      await expect(result.current.login('test@test.com', 'wrong')).rejects.toThrow(
+        ERROR_MESSAGES.INVALID_CREDENTIALS
+      );
+    });
+
+    it('Should logout user successfully', async () => {
+      const mockLogout = vi.fn().mockResolvedValue(undefined);
+      vi.mocked(useAuth).mockReturnValue({
+        user: null,
         login: vi.fn(),
         register: vi.fn(),
         logout: mockLogout,
+        loading: false,
       });
 
       const { result } = renderHook(() => useAuth());
-
-      await act(async () => {
-        await result.current.logout();
-      });
+      await result.current.logout();
 
       expect(mockLogout).toHaveBeenCalled();
-    });
-
-    it('MUST: Should return null when no user is authenticated', () => {
-      (useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
-        user: null,
-        loading: false,
-        login: vi.fn(),
-        register: vi.fn(),
-        logout: vi.fn(),
-      });
-
-      const { result } = renderHook(() => useAuth());
-
       expect(result.current.user).toBeNull();
     });
   });
 
-  describe('useMovies Hook - Fetch Movies', () => {
-    beforeEach(() => {
-      vi.clearAllMocks();
-    });
-
-    it('MUST: Should fetch list of popular movies', async () => {
-      const mockMovies = [
-        {
-          id: 1,
-          title: 'Test Movie 1',
-          poster_path: '/test1.jpg',
-          release_date: '2024-01-01',
-          vote_average: 8.5,
-          overview: 'Test overview',
-          backdrop_path: '/backdrop1.jpg',
-          genre_ids: [28, 12],
-          original_language: 'en',
-          original_title: 'Test Movie 1',
-          popularity: 1000,
-          video: false,
-          vote_count: 500,
-          adult: false,
-        },
-      ];
-
-      const mockUseMovies = vi.fn().mockReturnValue({
-        movies: mockMovies,
+  describe('Media List', () => {
+    it('Should fetch movies successfully', async () => {
+      vi.mocked(useMediaList).mockReturnValue({
+        items: mockMovies,
         loading: false,
         error: null,
-        loadMore: vi.fn(),
         hasMore: true,
+        loadMore: vi.fn(),
       });
 
-      vi.mock('../../hooks/useMovies', () => ({
-        useMovies: mockUseMovies,
-      }));
+      const { result } = renderHook(() => useMediaList('movie', 'popular'));
 
-      const { result } = renderHook(() => mockUseMovies('popular'));
-
-      expect(result.current.movies).toHaveLength(1);
-      expect(result.current.movies[0].title).toBe('Test Movie 1');
-      expect(result.current.loading).toBe(false);
-      expect(result.current.error).toBeNull();
+      await waitFor(() => {
+        expect(result.current.items).toHaveLength(3);
+        expect(result.current.error).toBeNull();
+      });
     });
 
-    it('MUST: Should handle errors when loading movies', async () => {
-      const mockUseMovies = vi.fn().mockReturnValue({
-        movies: [],
+    it('Should handle API errors', async () => {
+      vi.mocked(useMediaList).mockReturnValue({
+        items: [],
         loading: false,
-        error: 'Network error',
-        loadMore: vi.fn(),
+        error: ERROR_MESSAGES.FETCH_MOVIES_ERROR,
         hasMore: false,
+        loadMore: vi.fn(),
       });
 
-      const { result } = renderHook(() => mockUseMovies('popular'));
+      const { result } = renderHook(() => useMediaList('movie', 'popular'));
 
-      expect(result.current.movies).toHaveLength(0);
-      expect(result.current.error).toBe('Network error');
+      await waitFor(() => {
+        expect(result.current.error).toBe(ERROR_MESSAGES.FETCH_MOVIES_ERROR);
+      });
+    });
+
+    it('Should show loading state', () => {
+      vi.mocked(useMediaList).mockReturnValue({
+        items: [],
+        loading: true,
+        error: null,
+        hasMore: false,
+        loadMore: vi.fn(),
+      });
+
+      const { result } = renderHook(() => useMediaList('movie', 'popular'));
+      expect(result.current.loading).toBe(true);
     });
   });
-});
 
-describe('✅ SHOULD HAVE - Important Functionality', () => {
-  describe('Search Functionality - Content Search', () => {
-    it('SHOULD: Should search movies by search term', () => {
-      const mockSearchResults = [
-        {
-          id: 550,
-          title: 'Fight Club',
-          poster_path: '/test.jpg',
-          release_date: '1999-10-15',
-          vote_average: 8.4,
-          overview: 'A ticking-time-bomb insomniac...',
-          backdrop_path: '/backdrop.jpg',
-          genre_ids: [18],
-          original_language: 'en',
-          original_title: 'Fight Club',
-          popularity: 50.5,
-          video: false,
-          vote_count: 25000,
-          adult: false,
-        },
-      ];
-
-      const mockUseSearch = vi.fn().mockReturnValue({
-        results: mockSearchResults,
+  describe('Search', () => {
+    it('Should search movies by title', async () => {
+      const searchResult = mockMovies.find((m) => m.title === 'Fight Club')!;
+      vi.mocked(useSearch).mockReturnValue({
+        results: [searchResult],
         loading: false,
         error: null,
       });
 
-      const { result } = renderHook(() => mockUseSearch('Fight Club', 'movie'));
+      const { result } = renderHook(() => useSearch('Fight Club', 'movie'));
 
-      expect(result.current.results).toHaveLength(1);
-      expect(result.current.results[0].title).toBe('Fight Club');
-    });
-  });
-});
-
-describe('🎁 COULD HAVE - Desirable Functionality', () => {
-  describe('Filter Functionality - Content Filtering', () => {
-    it('COULD: Should filter movies by genre', () => {
-      const movies = [
-        { id: 1, title: 'Action Movie', genre_ids: [28], vote_average: 7.5, release_date: '2024-01-01' },
-        { id: 2, title: 'Comedy Movie', genre_ids: [35], vote_average: 6.5, release_date: '2024-02-01' },
-      ];
-
-      const selectedGenre = 28; // Action
-      const filtered = movies.filter((m) => m.genre_ids.includes(selectedGenre));
-
-      expect(filtered).toHaveLength(1);
-      expect(filtered[0].title).toBe('Action Movie');
+      await waitFor(() => {
+        expect(result.current.results).toHaveLength(1);
+      });
     });
 
-    it('COULD: Should filter movies by year', () => {
-      const movies = [
-        { id: 1, title: '2024 Movie', release_date: '2024-01-01', genre_ids: [], vote_average: 7.5 },
-        { id: 2, title: '2023 Movie', release_date: '2023-01-01', genre_ids: [], vote_average: 6.5 },
-      ];
-
-      const selectedYear = 2024;
-      const filtered = movies.filter((m) => {
-        const year = new Date(m.release_date).getFullYear();
-        return year === selectedYear;
+    it('Should handle search errors', async () => {
+      vi.mocked(useSearch).mockReturnValue({
+        results: [],
+        loading: false,
+        error: ERROR_MESSAGES.SEARCH_ERROR,
       });
 
-      expect(filtered).toHaveLength(1);
-      expect(filtered[0].title).toBe('2024 Movie');
+      const { result } = renderHook(() => useSearch('test', 'movie'));
+
+      await waitFor(() => {
+        expect(result.current.error).toBe(ERROR_MESSAGES.SEARCH_ERROR);
+      });
     });
   });
 
-  describe('Infinite Scroll - Infinite Scrolling', () => {
-    it('COULD: Should load more content on scroll', async () => {
-      const mockLoadMore = vi.fn();
-
-      const mockUseMovies = vi.fn().mockReturnValue({
-        movies: [],
+  describe('Infinite Scroll', () => {
+    it('Should load more content', () => {
+      const loadMore = vi.fn();
+      vi.mocked(useMediaList).mockReturnValue({
+        items: mockMovies,
         loading: false,
         error: null,
-        loadMore: mockLoadMore,
         hasMore: true,
+        loadMore,
       });
 
-      const { result } = renderHook(() => mockUseMovies('popular'));
+      const { result } = renderHook(() => useMediaList('movie', 'popular'));
+      result.current.loadMore();
 
-      await act(async () => {
-        result.current.loadMore();
-      });
-
-      expect(mockLoadMore).toHaveBeenCalled();
+      expect(loadMore).toHaveBeenCalled();
     });
-  });
-});
-
-describe('🚫 WON\'T HAVE - Out of Current Scope', () => {
-  it('WON\'T: Personalized recommendation system (requires ML)', () => {
-    expect(true).toBe(true);
-  });
-
-  it('WON\'T: Live chat between users (requires WebSockets)', () => {
-    expect(true).toBe(true);
-  });
-
-  it('WON\'T: Movie streaming (requires licenses and CDN)', () => {
-    expect(true).toBe(true);
   });
 });
