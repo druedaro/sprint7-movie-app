@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { loginSchema, registerSchema } from '../schemas/authSchema';
 import type { LoginFormData, RegisterFormData } from '../schemas/authSchema';
 import Button from '../components/atoms/Button';

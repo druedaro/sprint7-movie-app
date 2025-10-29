@@ -1,4 +1,4 @@
-import type { FilterProps } from '../../config/types';
+import type { FilterProps } from '../../config/interfaces';
 
 export default function FilterPanel({
   genres,

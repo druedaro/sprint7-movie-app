@@ -39,7 +39,7 @@ export const IMAGE_SIZES = {
 
 export function getImageUrl(path: string | null, size: string = 'original'): string {
   if (!path) {
-    return 'https://via.placeholder.com/500x750?text=No+Image';
+  return 'https://via.placeholder.com/500x750?text=No+Image';
   }
   return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;
 }

@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './auth/AuthContext';
+import { AuthProvider } from './auth/AuthProvider';
 import ProtectedRoute from './routes/ProtectedRoute';
 import { PATHS } from './routes/paths';
-import ScrollToTop from './components/utils/ScrollToTop';
+import { useScrollToTop } from './hooks/useScrollToTop';
 
 import WelcomePage from './pages/WelcomePage';
 import AuthPage from './pages/AuthPage';
@@ -13,60 +13,63 @@ import MovieDetailsPage from './pages/MovieDetailsPage';
 import SeriesDetailsPage from './pages/SeriesDetailsPage';
 import ActorDetailsPage from './pages/ActorDetailsPage';
 
+function AppContent() {
+  useScrollToTop();
+
+  return (
+    <Routes>
+      <Route path={PATHS.HOME} element={<WelcomePage />} />
+      <Route path={PATHS.AUTH} element={<AuthPage />} />
+
+      <Route 
+        path={PATHS.MOVIES} 
+        element={
+          <ProtectedRoute>
+            <MoviesPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path={PATHS.SERIES} 
+        element={
+          <ProtectedRoute>
+            <SeriesPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path={PATHS.MOVIE_DETAILS} 
+        element={
+          <ProtectedRoute>
+            <MovieDetailsPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path={PATHS.SERIES_DETAILS} 
+        element={
+          <ProtectedRoute>
+            <SeriesDetailsPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path={PATHS.ACTOR_DETAILS} 
+        element={
+          <ProtectedRoute>
+            <ActorDetailsPage />
+          </ProtectedRoute>
+        } 
+      />
+    </Routes>
+  );
+}
+
 function App() {
   return (
     <Router>
       <AuthProvider>
-        <Routes>
-          <Route path={PATHS.HOME} element={<WelcomePage />} />
-          <Route path={PATHS.AUTH} element={<AuthPage />} />
-
-            <Route 
-              path={PATHS.MOVIES} 
-              element={
-                <ProtectedRoute>
-                  <ScrollToTop />
-                  <MoviesPage />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path={PATHS.SERIES} 
-              element={
-                <ProtectedRoute>
-                  <ScrollToTop />
-                  <SeriesPage />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path={PATHS.MOVIE_DETAILS} 
-              element={
-                <ProtectedRoute>
-                  <ScrollToTop />
-                  <MovieDetailsPage />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path={PATHS.SERIES_DETAILS} 
-              element={
-                <ProtectedRoute>
-                  <ScrollToTop />
-                  <SeriesDetailsPage />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path={PATHS.ACTOR_DETAILS} 
-              element={
-                <ProtectedRoute>
-                  <ScrollToTop />
-                  <ActorDetailsPage />
-                </ProtectedRoute>
-              } 
-            />
-          </Routes>
+        <AppContent />
       </AuthProvider>
     </Router>
   );
