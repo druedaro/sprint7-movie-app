@@ -73,18 +73,14 @@ describe('Core Functionality Tests', () => {
     });
 
     it('Should show loading state while fetching', () => {
-      
-      vi.mocked(fetchAPI).mockImplementation(
-  () => new Promise(() => {})
-      );
+    vi.mocked(fetchAPI).mockImplementation(() => new Promise(() => {}));
 
-      const { result } = renderHook(() => useMediaList('movie', 'popular'));
+    const { result } = renderHook(() => useMediaList('movie', 'popular'));
 
-      
-      expect(result.current.loading).toBe(true);
-      expect(result.current.items).toHaveLength(0);
-      expect(result.current.error).toBeNull();
-    });
+    expect(result.current.loading).toBe(true);
+    expect(result.current.items).toHaveLength(0);
+    expect(result.current.error).toBeNull();
+  });
 
     it('Should load more content with pagination', async () => {
       const mockResponse: TMDBResponse<typeof mockMovies[0]> = {
