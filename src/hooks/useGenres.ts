@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { fetchAPI } from '../api/apiClient';
 import { TMDB_ENDPOINTS } from '../config/tmdb';
-import type { Genre, MediaType } from '../config/types';
+import type { Genre } from '../config/interfaces';
+import type { MediaType } from '../config/types';
 
 export function useGenres(mediaType: MediaType = 'movie') {
   const [genres, setGenres] = useState<Genre[]>([]);

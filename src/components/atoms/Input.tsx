@@ -1,4 +1,4 @@
-import type { InputProps } from '../../config/types';
+import type { InputProps } from '../../config/interfaces';
 
 export default function Input({ 
   label, 

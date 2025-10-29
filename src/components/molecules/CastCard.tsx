@@ -1,5 +1,5 @@
 import { getImageUrl, IMAGE_SIZES } from '../../config/tmdb';
-import type { CastCardProps } from '../../config/types';
+import type { CastCardProps } from '../../config/interfaces';
 
 export default function CastCard({ cast, onClick }: CastCardProps) {
   const imageUrl = getImageUrl(cast.profile_path, IMAGE_SIZES.profile.medium);

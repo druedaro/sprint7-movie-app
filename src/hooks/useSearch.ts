@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { fetchAPI } from '../api/apiClient';
 import { TMDB_ENDPOINTS } from '../config/tmdb';
-import type { Movie, Series, TMDBResponse, MediaType } from '../config/types';
+import type { Movie, Series, TMDBResponse } from '../config/interfaces';
+import type { MediaType } from '../config/types';
 
 export function useSearch(query: string, mediaType: MediaType = 'movie') {
   const [results, setResults] = useState<(Movie | Series)[]>([]);

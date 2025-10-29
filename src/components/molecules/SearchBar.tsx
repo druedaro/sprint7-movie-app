@@ -1,6 +1,6 @@
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
-import type { SearchBarProps } from '../../config/types';
+import type { SearchBarProps } from '../../config/interfaces';
 
 export default function SearchBar({ value, onChange, onSearch, placeholder = 'Search...' }: SearchBarProps) {
   const handleSubmit = (e: React.FormEvent) => {
