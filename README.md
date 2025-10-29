@@ -31,10 +31,10 @@ A modern and optimized web application for exploring movies and series using **R
 
 ### Project Philosophy
 
-1. **Clean Code:** Clean, documented, and maintainable code
-2. **Performance First:** Optimized for production (405 KB bundle)
+1. **Clean Code:** Simple, maintainable code without over-engineering
+2. **Performance First:** Optimized for production (141 KB gzipped)
 3. **Zero Over-engineering:** Only necessary dependencies
-4. **Type Safety:** TypeScript strict mode
+4. **Type Safety:** TypeScript strict mode with generics
 5. **Modern Standards:** Fetch API, ESM, Vite
 
 ---
@@ -68,8 +68,8 @@ A modern and optimized web application for exploring movies and series using **R
 - ✅ Responsive design (mobile-first)
 
 ### 🧪 Testing
-- ✅ 25 automated tests (Vitest)
-- ✅ Integration tests
+- ✅ 8 core tests (Moscow Method)
+- ✅ Real behavior testing (mocks only fetchAPI)
 
 ---
 
@@ -175,13 +175,10 @@ npm test             # Run tests with Vitest
 
 ## Testing
 
-**Tests cover:**
-- ✅ Login/Logout flow
-- ✅ Movie search
-- ✅ Filters (genre, year)
-- ✅ Page navigation
-- ✅ Protected routes
-- ✅ Infinite scroll
+**8 Core Tests (Moscow Method):**
+- ✅ Media List - Success & Failure Cases (5 tests)
+- ✅ Search - Success & Failure Cases (3 tests)
+- ✅ Real hook behavior with mocked fetchAPI
 
 ---
 
@@ -194,47 +191,47 @@ src/
 ├── main.tsx
 ├── index.css
 ├── setupTests.ts
-├── vitest-setup.d.ts
 │
 ├── api/
 │   └── apiClient.ts
 │
 ├── auth/
-│   └── AuthContext.tsx
+│   ├── AuthContext.tsx
+│   └── AuthProvider.tsx
 │
 ├── components/
 │   ├── atoms/
 │   │   ├── Button.tsx
-│   │   ├── CastCard.tsx
 │   │   ├── FormInput.tsx
-│   │   ├── Input.tsx
-│   │   ├── MovieCard.tsx
-│   │   └── SeriesCard.tsx
+│   │   └── Input.tsx
 │   ├── molecules/
+│   │   ├── CastCard.tsx
 │   │   ├── FilterPanel.tsx
-│   │   └── SearchBar.tsx
+│   │   ├── MovieCard.tsx
+│   │   ├── SearchBar.tsx
+│   │   └── SeriesCard.tsx
 │   ├── organisms/
 │   │   ├── Footer.tsx
 │   │   └── Navbar.tsx
-│   ├── templates/
-│   │   └── MediaListPage.tsx
-│   └── utils/
-│       └── ScrollToTop.tsx
+│   └── templates/
+│       ├── MediaDetailsPage.tsx
+│       └── MediaListPage.tsx
 │
 ├── config/
+│   ├── interfaces.ts
 │   ├── supabase.ts
 │   ├── tmdb.ts
 │   └── types.ts
 │
 ├── hooks/
+│   ├── useAuth.ts
 │   ├── useGenres.ts
 │   ├── useInfiniteScroll.ts
-│   ├── useMovieDetails.ts
-│   ├── useMovies.ts
+│   ├── useMediaDetails.ts
+│   ├── useMediaList.ts
 │   ├── usePersonDetails.ts
-│   ├── useSearch.ts
-│   ├── useSeries.ts
-│   └── useSeriesDetails.ts
+│   ├── useScrollToTop.ts
+│   └── useSearch.ts
 │
 ├── pages/
 │   ├── ActorDetailsPage.tsx
@@ -246,17 +243,18 @@ src/
 │   └── WelcomePage.tsx
 │
 ├── routes/
-│   ├── ProtectedRoute.tsx
-│   └── paths.ts
+│   ├── paths.ts
+│   └── ProtectedRoute.tsx
 │
 ├── schemas/
 │   └── authSchema.ts
 │
 └── utils/
-  ├── format.ts
-  └── tests/
-    ├── app.integration.test.tsx
-    └── app.moscow.test.ts
+    ├── formatters.ts
+    └── tests/
+        ├── app.moscow.test.ts
+        └── __mocks__/
+            └── apiMocks.ts
 ```
 
 ---
@@ -264,29 +262,31 @@ src/
 ## Best-Practices
 
 ### Code Quality
-- ✅ TypeScript strict mode
+- ✅ TypeScript strict mode with generics
 - ✅ ESLint configured
 - ✅ Custom hooks for reusable logic
 - ✅ Atomic Design pattern
 - ✅ Centralized configuration
-- ✅ DRY principle (reusable templates)
+- ✅ DRY principle (generic templates)
 - ✅ React Hook Form for form management
 - ✅ Zod schemas for validation
+- ✅ Clean code without comments
 
 ### Performance
 - ✅ Lazy loading images
 - ✅ Infinite scroll with IntersectionObserver
-- ✅ Fetch API
+- ✅ Native Fetch API
+- ✅ Optimized bundle (141 KB gzipped)
 
 ### UX/UI
 - ✅ Responsive design (mobile-first)
 - ✅ Loading states
-- ✅ Error handling
+- ✅ Error handling with user-friendly messages
 - ✅ Semantic HTML
 
 ### Testing
-- ✅ 25 automated tests
-- ✅ Integration tests
+- ✅ 8 core tests (Moscow Method)
+- ✅ Real hook behavior testing
 - ✅ Vitest + Testing Library
 
 ---
