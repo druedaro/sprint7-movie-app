@@ -8,6 +8,8 @@ import { fetchAPI } from '../../api/apiClient';
 import type { TMDBResponse } from '../../config/interfaces';
 vi.mock('../../api/apiClient');
 
+const neverResolve = () => new Promise(() => {});
+
 describe('Core Functionality Tests', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -73,7 +75,7 @@ describe('Core Functionality Tests', () => {
     });
 
     it('Should show loading state while fetching', () => {
-    vi.mocked(fetchAPI).mockImplementation(() => new Promise(() => {}));
+    vi.mocked(fetchAPI).mockImplementation(neverResolve);
 
     const { result } = renderHook(() => useMediaList('movie', 'popular'));
 
