@@ -1,9 +1,6 @@
 import type { ReactNode, ButtonHTMLAttributes, InputHTMLAttributes } from 'react';
 import type { ButtonVariant, ButtonSize } from './types';
 
-// ========================================
-// TMDB API Interfaces
-// ========================================
 
 export interface Movie {
   id: number;
@@ -118,9 +115,6 @@ export interface TMDBResponse<T> {
   total_results: number;
 }
 
-// ========================================
-// Authentication Interfaces
-// ========================================
 
 export interface User {
   id: string;
@@ -140,9 +134,6 @@ export interface AuthContextType {
   logout: () => Promise<void>;
 }
 
-// ========================================
-// Component Props Interfaces
-// ========================================
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;

@@ -16,7 +16,6 @@ export async function fetchAPI<T>(
     const response = await fetch(url);
     
     if (!response.ok) {
-      // Manejo específico de errores HTTP
       switch (response.status) {
         case 401:
           throw new Error('Invalid API key or unauthorized access');
@@ -34,11 +33,9 @@ export async function fetchAPI<T>(
     const data = await response.json();
     return data;
   } catch (error) {
-    // Re-lanzar errores conocidos
     if (error instanceof Error) {
       throw error;
     }
-    // Manejar errores de red u otros errores desconocidos
     throw new Error('Network error. Please check your connection and try again');
   }
 }

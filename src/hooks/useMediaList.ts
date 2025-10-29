@@ -3,15 +3,10 @@ import { fetchAPI } from '../api/apiClient';
 import { TMDB_ENDPOINTS } from '../config/tmdb';
 import type { Movie, Series, TMDBResponse } from '../config/interfaces';
 
-// Union type para los tipos de media que soportamos
 type MediaItem = Movie | Series;
 
-// Union type para las categorías disponibles
 type MediaCategory = 'popular' | 'top_rated' | 'upcoming';
 
-/**
- * Hook genérico para obtener listas de media (movies o series) con paginación
- */
 export function useMediaList<T extends MediaItem>(
   mediaType: 'movie' | 'tv',
   category: MediaCategory = 'popular'
@@ -22,7 +17,6 @@ export function useMediaList<T extends MediaItem>(
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  // Función para obtener el endpoint correcto basado en tipo y categoría
   const getEndpoint = (type: 'movie' | 'tv', cat: MediaCategory): string => {
     if (type === 'movie') {
       const movieEndpoints = {
@@ -35,7 +29,7 @@ export function useMediaList<T extends MediaItem>(
       const seriesEndpoints = {
         popular: TMDB_ENDPOINTS.popularSeries,
         top_rated: TMDB_ENDPOINTS.topRatedSeries,
-        upcoming: TMDB_ENDPOINTS.popularSeries, // Fallback, series no tiene upcoming
+        upcoming: TMDB_ENDPOINTS.popularSeries,
       };
       return seriesEndpoints[cat];
     }
@@ -53,7 +47,6 @@ export function useMediaList<T extends MediaItem>(
         setItems(data.results);
       } else {
         setItems((prev) => {
-          // Eliminar duplicados basado en ID
           const existingIds = new Set(prev.map((item) => item.id));
           const unique = data.results.filter((item) => !existingIds.has(item.id));
           return [...prev, ...unique];
@@ -68,15 +61,26 @@ export function useMediaList<T extends MediaItem>(
     }
   };
 
-  // Efecto para cargar datos cuando cambia la categoría
   useEffect(() => {
     setPage(1);
     setItems([]);
-    fetchItems(1, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const fetchInitialItems = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const endpoint = getEndpoint(mediaType, category);
+        const data = await fetchAPI<TMDBResponse<T>>(endpoint, { page: 1 });
+        setItems(data.results);
+        setHasMore(1 < data.total_pages);
+      } catch {
+        setError(`Error loading ${mediaType === 'movie' ? 'movies' : 'series'}. Please try again.`);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchInitialItems();
   }, [mediaType, category]);
 
-  // Función para cargar más elementos (infinite scroll)
   const loadMore = () => {
     if (!loading && hasMore) {
       const nextPage = page + 1;

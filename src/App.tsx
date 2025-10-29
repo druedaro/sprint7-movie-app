@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './auth/AuthContext';
+import { AuthProvider } from './auth/AuthProvider';
 import ProtectedRoute from './routes/ProtectedRoute';
 import { PATHS } from './routes/paths';
 import { useScrollToTop } from './hooks/useScrollToTop';

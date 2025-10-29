@@ -51,11 +51,9 @@ export default function MediaListPage<T extends MediaItem>({
 
   const filteredItems = (displayItems as T[])
     .filter((item) => {
-      // Filtro por género
       if (selectedGenre && !item.genre_ids.includes(selectedGenre)) {
         return false;
       }
-      // Filtro por año
       if (selectedYear) {
         const itemYear = getItemYear(item);
         if (itemYear !== selectedYear) {

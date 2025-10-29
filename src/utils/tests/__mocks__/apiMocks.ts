@@ -1,8 +1,5 @@
 import type { Movie, User } from '../../../config/interfaces';
 
-// ========================================
-// Mock User Data
-// ========================================
 
 export const mockUser: User = {
   id: '123',
@@ -13,9 +10,6 @@ export const mockUser: User = {
   },
 };
 
-// ========================================
-// Mock Movie Data
-// ========================================
 
 export const mockMovies: Movie[] = [
   {
@@ -68,9 +62,6 @@ export const mockMovies: Movie[] = [
   },
 ];
 
-// ========================================
-// Error Messages
-// ========================================
 
 export const ERROR_MESSAGES = {
   INVALID_CREDENTIALS: 'Invalid email or password',

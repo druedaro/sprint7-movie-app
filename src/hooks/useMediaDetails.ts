@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react';
 import { fetchAPI } from '../api/apiClient';
 import { TMDB_ENDPOINTS } from '../config/tmdb';
+
 import type { MovieDetails, SeriesDetails, Credits, Video } from '../config/interfaces';
 
-// Union type para los detalles de media
 type MediaDetailsItem = MovieDetails | SeriesDetails;
 
-/**
- * Hook genérico para obtener detalles de media (movies o series)
- * Incluye detalles, créditos y videos
- */
+
 export function useMediaDetails<T extends MediaDetailsItem>(
   mediaType: 'movie' | 'tv',
   id: number | undefined
@@ -28,7 +25,6 @@ export function useMediaDetails<T extends MediaDetailsItem>(
         setLoading(true);
         setError(null);
 
-        // Obtener endpoints basados en el tipo de media
         const detailsEndpoint = mediaType === 'movie' 
           ? TMDB_ENDPOINTS.movieDetails(id)
           : TMDB_ENDPOINTS.seriesDetails(id);
@@ -41,7 +37,6 @@ export function useMediaDetails<T extends MediaDetailsItem>(
           ? TMDB_ENDPOINTS.movieVideos(id)
           : TMDB_ENDPOINTS.seriesVideos(id);
 
-        // Hacer todas las peticiones en paralelo
         const [itemData, creditsData, videosData] = await Promise.all([
           fetchAPI<T>(detailsEndpoint),
           fetchAPI<Credits>(creditsEndpoint),
