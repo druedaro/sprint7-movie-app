@@ -193,45 +193,45 @@ src/
 ├── setupTests.ts
 │
 ├── api/
-│   └── apiClient.ts          # Fetch API wrapper
+│   └── apiClient.ts          
 │
 ├── auth/
-│   ├── AuthContext.tsx       # Auth context definition
-│   └── AuthProvider.tsx      # Auth state management
+│   ├── AuthContext.tsx    
+│   └── AuthProvider.tsx     
 │
 ├── components/
-│   ├── atoms/                # Basic UI elements
-│   │   ├── Button.tsx        # (with local ButtonProps)
+│   ├── atoms/               
+│   │   ├── Button.tsx       
 │   │   ├── FormInput.tsx
-│   │   └── Input.tsx         # (with local InputProps)
-│   ├── molecules/            # Composite components
-│   │   ├── CastCard.tsx      # (with local CastCardProps)
-│   │   ├── FilterPanel.tsx   # (with local FilterProps)
-│   │   ├── MovieCard.tsx     # (with local MovieCardProps)
-│   │   ├── SearchBar.tsx     # (with local SearchBarProps)
-│   │   └── SeriesCard.tsx    # (with local SeriesCardProps)
-│   ├── organisms/            # Complex sections
+│   │   └── Input.tsx      
+│   ├── molecules/          
+│   │   ├── CastCard.tsx      
+│   │   ├── FilterPanel.tsx   
+│   │   ├── MovieCard.tsx  
+│   │   ├── SearchBar.tsx    
+│   │   └── SeriesCard.tsx  
+│   ├── organisms/           
 │   │   ├── Footer.tsx
 │   │   └── Navbar.tsx
-│   └── templates/            # Page layouts (generic)
+│   └── templates/          
 │       ├── MediaDetailsPage.tsx
 │       └── MediaListPage.tsx
 │
 ├── config/
-│   ├── supabase.ts          # Supabase client
-│   └── tmdb.ts              # TMDB endpoints & config
+│   ├── supabase.ts        
+│   └── tmdb.ts             
 │
-├── hooks/                    # Custom React hooks
-│   ├── useAuth.ts           # Auth context consumer
-│   ├── useGenres.ts         # Genre fetching
-│   ├── useInfiniteScroll.ts # Infinite scroll logic
-│   ├── useMediaDetails.ts   # Media details + credits + videos
-│   ├── useMediaList.ts      # Paginated media lists
-│   ├── usePersonDetails.ts  # Actor details + filmography
-│   ├── useScrollToTop.ts    # Scroll restoration
-│   └── useSearch.ts         # Search with debounce
+├── hooks/             
+│   ├── useAuth.ts        
+│   ├── useGenres.ts        
+│   ├── useInfiniteScroll.ts 
+│   ├── useMediaDetails.ts
+│   ├── useMediaList.ts   
+│   ├── usePersonDetails.ts  
+│   ├── useScrollToTop.ts 
+│   └── useSearch.ts      
 │
-├── pages/                    # Route pages
+├── pages/                 
 │   ├── ActorDetailsPage.tsx
 │   ├── AuthPage.tsx
 │   ├── MovieDetailsPage.tsx
@@ -241,25 +241,26 @@ src/
 │   └── WelcomePage.tsx
 │
 ├── routes/
-│   ├── paths.ts             # Route path constants
-│   └── ProtectedRoute.tsx   # Auth route guard
+│   ├── paths.ts            
+│   └── ProtectedRoute.tsx  
 │
 ├── schemas/
-│   └── authSchema.ts        # Zod validation schemas
+│   └── authSchema.ts       
 │
-├── services/                 # API service layer (NEW)
-│   ├── movieService.ts      # Movie API calls
-│   ├── seriesService.ts     # Series API calls
-│   └── personService.ts     # Person API calls
+├── services/             
+│   ├── movieService.ts     
+│   ├── seriesService.ts    
+│   └── personService.ts    
 │
-├── types/                    # TypeScript types (RENAMED from models/)
-│   ├── domain.ts            # Domain entities (Movie, Series, Person, etc.)
-│   └── common.ts            # App types (MediaType, AuthContextType, etc.)
+├── types/                 
+│   ├── domain.ts          
+│   └── common.ts           
 │
 └── utils/
-    ├── formatters.ts        # Date/rating formatters
+    ├── formatters.ts       
     └── tests/
         ├── app.moscow.test.ts
+        ├── auth.moscow.test.ts
         └── __mocks__/
             └── apiMocks.ts
 ```
@@ -307,7 +308,7 @@ Each component now defines its own props interface locally, avoiding global coup
 - ✅ Semantic HTML
 
 ### Testing
-- ✅ 8 core tests (Moscow Method)
+- ✅ 8 core tests (Moscow Method) + 3 auth tests
 - ✅ Real hook behavior testing
 - ✅ Vitest + Testing Library
 
