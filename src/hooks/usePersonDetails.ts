@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { fetchAPI } from '../api/apiClient';
-import { TMDB_ENDPOINTS } from '../config/tmdb';
-import type { Person, MovieCredits, SeriesCredits } from '../config/interfaces';
+import { personService } from '../services/personService';
+import type { Person, MovieCredits, SeriesCredits } from '../types/domain';
 
 export function usePersonDetails(personId: number | undefined) {
   const [person, setPerson] = useState<Person | null>(null);
@@ -19,9 +18,9 @@ export function usePersonDetails(personId: number | undefined) {
         setError(null);
 
         const [personData, movieCreditsData, tvCreditsData] = await Promise.all([
-          fetchAPI<Person>(TMDB_ENDPOINTS.personDetails(personId)),
-          fetchAPI<MovieCredits>(TMDB_ENDPOINTS.personMovieCredits(personId)),
-          fetchAPI<SeriesCredits>(TMDB_ENDPOINTS.personTvCredits(personId)),
+          personService.getPersonDetails(personId),
+          personService.getPersonMovieCredits(personId),
+          personService.getPersonTvCredits(personId),
         ]);
 
         setPerson(personData);

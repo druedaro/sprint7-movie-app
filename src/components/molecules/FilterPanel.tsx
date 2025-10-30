@@ -1,4 +1,12 @@
-import type { FilterProps } from '../../config/interfaces';
+import type { Genre } from '../../types/domain';
+
+export interface FilterProps {
+  genres: Genre[];
+  selectedGenre?: number;
+  selectedYear?: number;
+  onGenreChange: (genreId?: number) => void;
+  onYearChange: (year?: number) => void;
+}
 
 export default function FilterPanel({
   genres,

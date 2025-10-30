@@ -1,6 +1,4 @@
-import type { ReactNode, ButtonHTMLAttributes, InputHTMLAttributes } from 'react';
-import type { ButtonVariant, ButtonSize } from './types';
-
+// Domain entities - TMDB API models
 
 export interface Movie {
   id: number;
@@ -108,14 +106,6 @@ export interface Video {
   official: boolean;
 }
 
-export interface TMDBResponse<T> {
-  page: number;
-  results: T[];
-  total_pages: number;
-  total_results: number;
-}
-
-
 export interface User {
   id: string;
   email: string;
@@ -124,60 +114,4 @@ export interface User {
     avatar_url?: string;
   };
   created_at: string;
-}
-
-export interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
-}
-
-
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  children: ReactNode;
-}
-
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  error?: string;
-  helperText?: string;
-}
-
-export interface MovieCardProps {
-  movie: Movie;
-  onClick: () => void;
-}
-
-export interface SeriesCardProps {
-  series: Series;
-  onClick: () => void;
-}
-
-export interface CastCardProps {
-  cast: CastMember;
-  onClick?: () => void;
-}
-
-export interface SearchBarProps {
-  value: string;
-  onChange: (value: string) => void;
-  onSearch: () => void;
-  placeholder?: string;
-}
-
-export interface FilterProps {
-  genres: Genre[];
-  selectedGenre?: number;
-  selectedYear?: number;
-  onGenreChange: (genreId?: number) => void;
-  onYearChange: (year?: number) => void;
-}
-
-export interface ProtectedRouteProps {
-  children: ReactNode;
-  redirectTo?: string;
 }

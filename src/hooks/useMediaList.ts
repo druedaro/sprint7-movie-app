@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { fetchAPI } from '../api/apiClient';
-import { TMDB_ENDPOINTS } from '../config/tmdb';
-import type { Movie, Series, TMDBResponse } from '../config/interfaces';
+import { movieService, type MovieCategory } from '../services/movieService';
+import { seriesService, type SeriesCategory } from '../services/seriesService';
+import type { Movie, Series } from '../types/domain';
 
 type MediaItem = Movie | Series;
 
-type MediaCategory = 'popular' | 'top_rated' | 'upcoming';
+type MediaCategory = MovieCategory | SeriesCategory;
 
 export function useMediaList<T extends MediaItem>(
   mediaType: 'movie' | 'tv',
@@ -17,39 +17,22 @@ export function useMediaList<T extends MediaItem>(
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  const getEndpoint = (type: 'movie' | 'tv', cat: MediaCategory): string => {
-    if (type === 'movie') {
-      const movieEndpoints = {
-        popular: TMDB_ENDPOINTS.popularMovies,
-        top_rated: TMDB_ENDPOINTS.topRatedMovies,
-        upcoming: TMDB_ENDPOINTS.upcomingMovies,
-      };
-      return movieEndpoints[cat];
-    } else {
-      const seriesEndpoints = {
-        popular: TMDB_ENDPOINTS.popularSeries,
-        top_rated: TMDB_ENDPOINTS.topRatedSeries,
-        upcoming: TMDB_ENDPOINTS.popularSeries,
-      };
-      return seriesEndpoints[cat];
-    }
-  };
-
   const fetchItems = async (pageNum: number, reset = false) => {
     try {
       setLoading(true);
       setError(null);
 
-      const endpoint = getEndpoint(mediaType, category);
-      const data = await fetchAPI<TMDBResponse<T>>(endpoint, { page: pageNum });
+      const data = mediaType === 'movie'
+        ? await movieService.getMovies(category as MovieCategory, pageNum)
+        : await seriesService.getSeries(category as SeriesCategory, pageNum);
 
       if (reset) {
-        setItems(data.results);
+        setItems(data.results as T[]);
       } else {
         setItems((prev) => {
           const existingIds = new Set(prev.map((item) => item.id));
           const unique = data.results.filter((item) => !existingIds.has(item.id));
-          return [...prev, ...unique];
+          return [...prev, ...unique] as T[];
         });
       }
 
@@ -68,9 +51,12 @@ export function useMediaList<T extends MediaItem>(
       try {
         setLoading(true);
         setError(null);
-        const endpoint = getEndpoint(mediaType, category);
-        const data = await fetchAPI<TMDBResponse<T>>(endpoint, { page: 1 });
-        setItems(data.results);
+
+        const data = mediaType === 'movie'
+          ? await movieService.getMovies(category as MovieCategory, 1)
+          : await seriesService.getSeries(category as SeriesCategory, 1);
+
+        setItems(data.results as T[]);
         setHasMore(1 < data.total_pages);
       } catch {
         setError(`Error loading ${mediaType === 'movie' ? 'movies' : 'series'}. Please try again.`);

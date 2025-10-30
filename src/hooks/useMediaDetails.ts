@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import { fetchAPI } from '../api/apiClient';
-import { TMDB_ENDPOINTS } from '../config/tmdb';
-
-import type { MovieDetails, SeriesDetails, Credits, Video } from '../config/interfaces';
+import { movieService } from '../services/movieService';
+import { seriesService } from '../services/seriesService';
+import type { MovieDetails, SeriesDetails, Credits, Video } from '../types/domain';
 
 type MediaDetailsItem = MovieDetails | SeriesDetails;
-
 
 export function useMediaDetails<T extends MediaDetailsItem>(
   mediaType: 'movie' | 'tv',
@@ -25,27 +23,25 @@ export function useMediaDetails<T extends MediaDetailsItem>(
         setLoading(true);
         setError(null);
 
-        const detailsEndpoint = mediaType === 'movie' 
-          ? TMDB_ENDPOINTS.movieDetails(id)
-          : TMDB_ENDPOINTS.seriesDetails(id);
-          
-        const creditsEndpoint = mediaType === 'movie'
-          ? TMDB_ENDPOINTS.movieCredits(id)
-          : TMDB_ENDPOINTS.seriesCredits(id);
-          
-        const videosEndpoint = mediaType === 'movie'
-          ? TMDB_ENDPOINTS.movieVideos(id)
-          : TMDB_ENDPOINTS.seriesVideos(id);
-
-        const [itemData, creditsData, videosData] = await Promise.all([
-          fetchAPI<T>(detailsEndpoint),
-          fetchAPI<Credits>(creditsEndpoint),
-          fetchAPI<{ results: Video[] }>(videosEndpoint),
-        ]);
-
-        setItem(itemData);
-        setCredits(creditsData);
-        setVideos(videosData.results);
+        if (mediaType === 'movie') {
+          const [itemData, creditsData, videosData] = await Promise.all([
+            movieService.getMovieDetails(id),
+            movieService.getMovieCredits(id),
+            movieService.getMovieVideos(id),
+          ]);
+          setItem(itemData as T);
+          setCredits(creditsData);
+          setVideos(videosData);
+        } else {
+          const [itemData, creditsData, videosData] = await Promise.all([
+            seriesService.getSeriesDetails(id),
+            seriesService.getSeriesCredits(id),
+            seriesService.getSeriesVideos(id),
+          ]);
+          setItem(itemData as T);
+          setCredits(creditsData);
+          setVideos(videosData);
+        }
       } catch {
         setError(`Error loading ${mediaType === 'movie' ? 'movie' : 'series'} details.`);
       } finally {

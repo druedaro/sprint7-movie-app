@@ -7,7 +7,7 @@ import { loginSchema, registerSchema } from '../schemas/authSchema';
 import type { LoginFormData, RegisterFormData } from '../schemas/authSchema';
 import Button from '../components/atoms/Button';
 import FormInput from '../components/atoms/FormInput';
-import type { AuthMode } from '../config/types';
+import type { AuthMode } from '../types/common';
 
 export default function AuthPage() {
   const [mode, setMode] = useState<AuthMode>('login');

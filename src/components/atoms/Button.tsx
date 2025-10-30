@@ -1,4 +1,11 @@
-import type { ButtonProps } from '../../config/interfaces';
+import type { ReactNode, ButtonHTMLAttributes } from 'react';
+import type { ButtonVariant, ButtonSize } from '../../types/common';
+
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  children: ReactNode;
+}
 
 export default function Button({ 
   variant = 'primary', 

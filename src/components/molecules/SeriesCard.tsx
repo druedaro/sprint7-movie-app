@@ -1,6 +1,11 @@
 import { getImageUrl, IMAGE_SIZES } from '../../config/tmdb';
 import { formatYear, formatRating } from '../../utils/formatters';
-import type { SeriesCardProps } from '../../config/interfaces';
+import type { Series } from '../../types/domain';
+
+export interface SeriesCardProps {
+  series: Series;
+  onClick: () => void;
+}
 
 export default function SeriesCard({ series, onClick }: SeriesCardProps) {
   const imageUrl = getImageUrl(series.poster_path, IMAGE_SIZES.poster.medium);

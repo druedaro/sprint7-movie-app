@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { fetchAPI } from '../api/apiClient';
-import { TMDB_ENDPOINTS } from '../config/tmdb';
-import type { Movie, Series, TMDBResponse } from '../config/interfaces';
-import type { MediaType } from '../config/types';
+import { movieService } from '../services/movieService';
+import { seriesService } from '../services/seriesService';
+import type { Movie, Series } from '../types/domain';
+import type { MediaType } from '../types/common';
 
 export function useSearch(query: string, mediaType: MediaType = 'movie') {
   const [results, setResults] = useState<(Movie | Series)[]>([]);
@@ -21,8 +21,9 @@ export function useSearch(query: string, mediaType: MediaType = 'movie') {
           setLoading(true);
           setError(null);
 
-          const endpoint = mediaType === 'movie' ? TMDB_ENDPOINTS.searchMovies : TMDB_ENDPOINTS.searchSeries;
-          const data = await fetchAPI<TMDBResponse<Movie | Series>>(endpoint, { query });
+          const data = mediaType === 'movie'
+            ? await movieService.searchMovies(query)
+            : await seriesService.searchSeries(query);
 
           setResults(data.results || []);
         } catch {

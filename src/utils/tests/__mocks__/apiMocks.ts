@@ -1,4 +1,4 @@
-import type { Movie, User } from '../../../config/interfaces';
+import type { Movie, User } from '../../../types/domain';
 
 
 export const mockUser: User = {

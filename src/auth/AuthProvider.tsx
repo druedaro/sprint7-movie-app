@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { supabase } from '../config/supabase';
-import type { User } from '../config/interfaces';
+import type { User } from '../types/domain';
 import { AuthContext } from './AuthContext';
 
 export function AuthProvider({ children }: { children: ReactNode }) {

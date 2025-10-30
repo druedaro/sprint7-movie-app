@@ -1,5 +1,5 @@
 import MediaDetailsPage from '../components/templates/MediaDetailsPage';
-import type { SeriesDetails } from '../config/interfaces';
+import type { SeriesDetails } from '../types/domain';
 
 export default function SeriesDetailsPage() {
   const config = {

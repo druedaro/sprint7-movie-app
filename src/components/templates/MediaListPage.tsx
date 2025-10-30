@@ -8,7 +8,7 @@ import Navbar from '../organisms/Navbar';
 import Footer from '../organisms/Footer';
 import SearchBar from '../molecules/SearchBar';
 import FilterPanel from '../molecules/FilterPanel';
-import type { Movie, Series } from '../../config/interfaces';
+import type { Movie, Series } from '../../types/domain';
 
 type MediaItem = Movie | Series;
 

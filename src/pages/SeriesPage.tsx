@@ -1,7 +1,7 @@
 import MediaListPage from '../components/templates/MediaListPage';
 import SeriesCard from '../components/molecules/SeriesCard';
 import { buildPath } from '../routes/paths';
-import type { Series } from '../config/interfaces';
+import type { Series } from '../types/domain';
 
 export default function SeriesPage() {
   return (

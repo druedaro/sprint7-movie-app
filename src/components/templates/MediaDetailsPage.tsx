@@ -5,7 +5,7 @@ import Navbar from '../organisms/Navbar';
 import Footer from '../organisms/Footer';
 import CastCard from '../molecules/CastCard';
 import Button from '../atoms/Button';
-import type { MovieDetails, SeriesDetails } from '../../config/interfaces';
+import type { MovieDetails, SeriesDetails } from '../../types/domain';
 
 type MediaDetailsItem = MovieDetails | SeriesDetails;
 

@@ -5,7 +5,7 @@ import { useMediaList } from '../../hooks/useMediaList';
 import { useSearch } from '../../hooks/useSearch';
 import { mockMovies } from './__mocks__/apiMocks';
 import { fetchAPI } from '../../api/apiClient';
-import type { TMDBResponse } from '../../config/interfaces';
+import type { TMDBResponse } from '../../types/common';
 vi.mock('../../api/apiClient');
 
 const neverResolve = () => new Promise(() => {});
