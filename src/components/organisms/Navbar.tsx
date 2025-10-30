@@ -13,7 +13,7 @@ export default function Navbar() {
   const handleLogout = async () => {
     try {
       await logout();
-      navigate(location.pathname, { replace: true });
+      navigate(PATHS.HOME, { replace: true });
     } catch {
       alert('Error logging out. Please try again.');
     }
