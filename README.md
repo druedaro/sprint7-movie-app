@@ -175,10 +175,11 @@ npm test             # Run tests with Vitest
 
 ## Testing
 
-**8 Core Tests (Moscow Method):**
+**11 Core Tests (Moscow Method):**
 - ✅ Media List - Success & Failure Cases (5 tests)
 - ✅ Search - Success & Failure Cases (3 tests)
 - ✅ Real hook behavior with mocked fetchAPI
+- ✅ Auth - Success & Failure Cases (3 tests)
 
 ---
 
@@ -264,21 +265,6 @@ src/
         └── __mocks__/
             └── apiMocks.ts
 ```
-
-### Architecture Highlights
-
-**Separation of Concerns:**
-- **services/** - API logic isolated from hooks
-- **hooks/** - Business logic & state management
-- **components/** - Presentation layer (props defined locally)
-- **types/** - Domain entities (domain.ts) & app types (common.ts)
-
-**Component Props:**
-Each component now defines its own props interface locally, avoiding global coupling.
-
-**Type Organization:**
-- **domain.ts** - TMDB entities (Movie, Series, Person, Genre, Credits, etc.)
-- **common.ts** - Application types (MediaType, AuthContextType, TMDBResponse, etc.)
 
 ---
 
