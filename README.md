@@ -1,5 +1,7 @@
 # 🎬 MovieApp - Movies & Series Explorer
 
+![Demo](https://i.imgur.com/dCeVPnT.gif)
+
 A modern and optimized web application for exploring movies and series using **React 19**, **TypeScript**, **Vite**, and **TMDB API** with secure authentication via **Supabase**.
 
 ---
