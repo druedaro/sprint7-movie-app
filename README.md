@@ -75,38 +75,27 @@ A modern and optimized web application for exploring movies and series using **R
 
 ---
 
-## Tech-Stack
+## 🛠️ Tech Stack
 
-### Core
-- **React 19.1** - Modern UI library with hooks
-- **TypeScript 5.8** - Type safety with strict mode
-- **Vite 7.1** - Ultra-fast build tool (HMR in <100ms)
+### Frontend & Core
+![React](https://img.shields.io/badge/React-19.1-61DAFB?style=flat&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-7.1-646CFF?style=flat&logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
 
-### Styling & UI
-- **Tailwind CSS 3.4** - Utility-first CSS framework
-- **PostCSS + Autoprefixer** - Cross-browser compatibility
+### Backend & Services
+![Supabase](https://img.shields.io/badge/Supabase-2.47-3ECF8E?style=flat&logo=supabase&logoColor=white)
+![TMDB](https://img.shields.io/badge/TMDB-API-01D277?style=flat&logo=themoviedatabase&logoColor=white)
 
-### Backend & API
-- **Supabase 2.47** - Authentication & Database
-- **TMDB API** - Movie/Series data
-- **Fetch API** - HTTP requests (native, no dependencies)
+### Forms & Routing
+![React Hook Form](https://img.shields.io/badge/React_Hook_Form-7.64-EC5990?style=flat&logo=reacthookform&logoColor=white)
+![Zod](https://img.shields.io/badge/Zod-4.1-3E67B1?style=flat&logo=zod&logoColor=white)
+![React Router](https://img.shields.io/badge/React_Router-7.9-CA4245?style=flat&logo=reactrouter&logoColor=white)
 
-### Forms & Validation
-- **React Hook Form 7.64** - Performant form management
-- **Zod 4.1** - TypeScript-first schema validation
-- **@hookform/resolvers 5.2** - Integration between RHF and Zod
-
-### Routing
-- **React Router 7.9** - Client-side routing
-
-### Testing
-- **Vitest 3.2** - Unit & integration testing
-- **Testing Library** - React component testing
-- **Happy DOM** - Lightweight DOM implementation
-
-### Development Tools
-- **ESLint 9** - Code linting
-- **TypeScript ESLint** - TypeScript-specific rules
+### Testing & Quality
+![Vitest](https://img.shields.io/badge/Vitest-3.2-6E9F18?style=flat&logo=vitest&logoColor=white)
+![Testing Library](https://img.shields.io/badge/Testing_Library-React-E33332?style=flat&logo=testinglibrary&logoColor=white)
+![ESLint](https://img.shields.io/badge/ESLint-9-4B32C3?style=flat&logo=eslint&logoColor=white)
 
 ---
 
@@ -115,14 +104,14 @@ A modern and optimized web application for exploring movies and series using **R
 #
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone <https://github.com/druedaro/sprint7-movie-app.git>
 cd sprint7
 
 # Install dependencies (396 optimized packages)
 npm install
 
 # Configure environment variables
-cp .env.example .env
+cp .env.local .env
 
 # Edit .env with your credentials
 ```
