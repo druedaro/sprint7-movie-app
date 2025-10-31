@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react';
-import { movieService, type MovieCategory } from '../services/movieService';
-import { seriesService, type SeriesCategory } from '../services/seriesService';
+import { movieService } from '../services/movieService';
+import { seriesService } from '../services/seriesService';
 import type { Movie, Series } from '../types/domain';
 
 type MediaItem = Movie | Series;
 
-type MediaCategory = MovieCategory | SeriesCategory;
-
 export function useMediaList<T extends MediaItem>(
-  mediaType: 'movie' | 'tv',
-  category: MediaCategory = 'popular'
+  mediaType: 'movie' | 'tv'
 ) {
   const [items, setItems] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,8 +20,8 @@ export function useMediaList<T extends MediaItem>(
       setError(null);
 
       const data = mediaType === 'movie'
-        ? await movieService.getMovies(category as MovieCategory, pageNum)
-        : await seriesService.getSeries(category as SeriesCategory, pageNum);
+        ? await movieService.getMovies(pageNum)
+        : await seriesService.getSeries(pageNum);
 
       if (reset) {
         setItems(data.results as T[]);
@@ -53,8 +50,8 @@ export function useMediaList<T extends MediaItem>(
         setError(null);
 
         const data = mediaType === 'movie'
-          ? await movieService.getMovies(category as MovieCategory, 1)
-          : await seriesService.getSeries(category as SeriesCategory, 1);
+          ? await movieService.getMovies(1)
+          : await seriesService.getSeries(1);
 
         setItems(data.results as T[]);
         setHasMore(1 < data.total_pages);
@@ -65,7 +62,7 @@ export function useMediaList<T extends MediaItem>(
       }
     };
     fetchInitialItems();
-  }, [mediaType, category]);
+  }, [mediaType]);
 
   const loadMore = () => {
     if (!loading && hasMore) {

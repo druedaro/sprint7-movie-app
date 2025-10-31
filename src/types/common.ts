@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 
-// API Response types
 export interface TMDBResponse<T> {
   page: number;
   results: T[];
@@ -8,12 +7,11 @@ export interface TMDBResponse<T> {
   total_results: number;
 }
 
-// Application types
 export type MediaType = 'movie' | 'tv';
 
-export type MovieCategory = 'popular' | 'top_rated' | 'upcoming';
+export type MovieCategory = 'popular';
 
-export type SeriesCategory = 'popular' | 'top_rated';
+export type SeriesCategory = 'popular';
 
 export type AuthMode = 'login' | 'register';
 
@@ -21,7 +19,6 @@ export type ButtonVariant = 'primary' | 'secondary' | 'outline';
 
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
-// Auth types
 export interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -30,10 +27,8 @@ export interface AuthContextType {
   logout: () => Promise<void>;
 }
 
-// Import User from domain types
 import type { User } from './domain';
 
-// Protected Route types
 export interface ProtectedRouteProps {
   children: ReactNode;
   redirectTo?: string;

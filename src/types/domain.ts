@@ -1,5 +1,3 @@
-// Domain entities - TMDB API models
-
 export interface Movie {
   id: number;
   title: string;

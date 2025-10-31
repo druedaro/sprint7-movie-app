@@ -3,17 +3,12 @@ import { TMDB_ENDPOINTS } from '../config/tmdb';
 import type { Movie, MovieDetails, Credits, Video } from '../types/domain';
 import type { TMDBResponse } from '../types/common';
 
-export type MovieCategory = 'popular' | 'top_rated' | 'upcoming';
+export type MovieCategory = 'popular';
 
-const ENDPOINTS_MAP: Record<MovieCategory, string> = {
-  popular: TMDB_ENDPOINTS.popularMovies,
-  top_rated: TMDB_ENDPOINTS.topRatedMovies,
-  upcoming: TMDB_ENDPOINTS.upcomingMovies,
-};
 
 export const movieService = {
-  async getMovies(category: MovieCategory = 'popular', page = 1): Promise<TMDBResponse<Movie>> {
-    const endpoint = ENDPOINTS_MAP[category];
+  async getMovies(page = 1): Promise<TMDBResponse<Movie>> {
+    const endpoint = TMDB_ENDPOINTS.popularMovies;
     return fetchAPI<TMDBResponse<Movie>>(endpoint, { page });
   },
 

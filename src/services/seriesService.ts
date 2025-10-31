@@ -3,16 +3,12 @@ import { TMDB_ENDPOINTS } from '../config/tmdb';
 import type { Series, SeriesDetails, Credits, Video } from '../types/domain';
 import type { TMDBResponse } from '../types/common';
 
-export type SeriesCategory = 'popular' | 'top_rated';
+export type SeriesCategory = 'popular';
 
-const ENDPOINTS_MAP: Record<SeriesCategory, string> = {
-  popular: TMDB_ENDPOINTS.popularSeries,
-  top_rated: TMDB_ENDPOINTS.topRatedSeries,
-};
 
 export const seriesService = {
-  async getSeries(category: SeriesCategory = 'popular', page = 1): Promise<TMDBResponse<Series>> {
-    const endpoint = ENDPOINTS_MAP[category];
+  async getSeries(page = 1): Promise<TMDBResponse<Series>> {
+    const endpoint = TMDB_ENDPOINTS.popularSeries;
     return fetchAPI<TMDBResponse<Series>>(endpoint, { page });
   },
 

@@ -34,7 +34,7 @@ export default function MediaListPage<T extends MediaItem>({
 
   const navigate = useNavigate();
   const { genres } = useGenres(mediaType);
-  const { items, loading, error, loadMore, hasMore } = useMediaList<T>(mediaType, 'popular');
+  const { items, loading, error, loadMore, hasMore } = useMediaList<T>(mediaType);
   const { results, loading: searchLoading } = useSearch(searchQuery, mediaType);
   const loaderRef = useInfiniteScroll(loadMore, hasMore && !isSearching, loading);
 

@@ -23,7 +23,7 @@ describe('Core Functionality Tests', () => {
         total_results: 100,
       };
       vi.mocked(fetchAPI).mockResolvedValueOnce(mockResponse);
-      const { result } = renderHook(() => useMediaList('movie', 'popular'));
+      const { result } = renderHook(() => useMediaList('movie'));
       expect(result.current.loading).toBe(true);
       expect(result.current.items).toHaveLength(0);
       await waitFor(() => {
@@ -36,7 +36,7 @@ describe('Core Functionality Tests', () => {
 
     it('Failure: Should handle API errors gracefully', async () => {
       vi.mocked(fetchAPI).mockRejectedValueOnce(new Error('API Error'));
-      const { result } = renderHook(() => useMediaList('movie', 'popular'));
+      const { result } = renderHook(() => useMediaList('movie'));
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
       });
@@ -46,7 +46,7 @@ describe('Core Functionality Tests', () => {
 
     it('Failure: Should handle network errors', async () => {
       vi.mocked(fetchAPI).mockRejectedValueOnce(new Error('Network error'));
-      const { result } = renderHook(() => useMediaList('tv', 'popular'));
+      const { result } = renderHook(() => useMediaList('tv'));
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
       });
@@ -56,7 +56,7 @@ describe('Core Functionality Tests', () => {
 
     it('Should show loading state while fetching', () => {
       vi.mocked(fetchAPI).mockImplementation(neverResolve);
-      const { result } = renderHook(() => useMediaList('movie', 'popular'));
+      const { result } = renderHook(() => useMediaList('movie'));
       expect(result.current.loading).toBe(true);
       expect(result.current.items).toHaveLength(0);
       expect(result.current.error).toBeNull();
@@ -70,7 +70,7 @@ describe('Core Functionality Tests', () => {
         total_results: 100,
       };
       vi.mocked(fetchAPI).mockResolvedValue(mockResponse);
-      const { result } = renderHook(() => useMediaList('movie', 'popular'));
+      const { result } = renderHook(() => useMediaList('movie'));
       await waitFor(() => {
         expect(result.current.items).toHaveLength(3);
       });

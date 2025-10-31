@@ -113,7 +113,6 @@ export default {
           borderTopColor: 'rgb(255 255 255 / 0.1)',
         },
 
-        // Loading Spinner
         '.spinner-lime': {
           borderTopColor: 'rgb(193 215 72)',
           borderRightColor: 'transparent',
