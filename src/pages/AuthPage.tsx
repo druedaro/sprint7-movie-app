@@ -13,7 +13,7 @@ export default function AuthPage() {
   const [mode, setMode] = useState<AuthMode>('login');
   const [error, setError] = useState('');
   
-  const { login, register: registerUser } = useAuth();
+  const { login, register: registerUser, loginAsGuest } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -70,6 +70,11 @@ export default function AuthPage() {
     setError('');
     resetLogin();
     resetRegister();
+  };
+
+  const handleGuestLogin = () => {
+    loginAsGuest();
+    navigate(from, { replace: true });
   };
 
   return (
@@ -136,6 +141,25 @@ export default function AuthPage() {
 
             <Button type="submit" variant="primary" size="lg" className="w-full">
               Sign In
+            </Button>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-700"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-slate-900/50 text-gray-400">or</span>
+              </div>
+            </div>
+
+            <Button 
+              type="button" 
+              variant="outline" 
+              size="lg" 
+              className="w-full"
+              onClick={handleGuestLogin}
+            >
+              Continue as Guest
             </Button>
 
             <p className="text-center text-sm">
