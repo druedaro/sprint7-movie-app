@@ -157,10 +157,13 @@ npm run dev          # Start server at http://localhost:5173
 
 # Build
 npm run build        # Compile TypeScript + production build
+npm run seo:lint     # Audit the generated dist/ HTML (run after build)
 
 # Testing
 npm test             # Run tests with Vitest
 ```
+
+The SEO workflow runs `seo-lint` on every push and pull request to `develop` and `main`. It checks static HTML and basic metadata, structure, sitemap/robots, structured data, and selected GEO signals; it does not render the React app or provide a complete SEO/AEO audit.
 
 ---
 
