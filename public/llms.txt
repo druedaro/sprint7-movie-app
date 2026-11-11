@@ -1,0 +1,13 @@
+# The Corner Database
+
+> Discover movies and TV series, explore actor details, and watch trailers.
+
+The Corner Database is an entertainment discovery application. It uses TMDb data to help visitors browse movies and television series, view cast and actor information, and find trailers.
+
+## Public entry point
+
+- [Home](https://sprint7-movie-app.vercel.app/): Overview of the movie and TV discovery app.
+
+## Access
+
+An account is required to use the catalog, search, and detail pages. Movie and television metadata is provided by TMDb.
